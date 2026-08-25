@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     const { data, error } = await query;
     if (error) throw error;
 
-    return NextResponse.json({ orders: data, source: 'supabase' });
+    return NextResponse.json({ orders: data, source: 'database' });
   } catch (err: any) {
     console.error('Error fetching orders from Supabase:', err);
     return NextResponse.json({ orders: INITIAL_ORDERS, source: 'error_fallback' });
@@ -36,12 +36,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Restrict saving: only successful/completed orders are written to Supabase database.
+    // Restrict saving: only successful/completed orders are written to database.
     if (body.status !== 'completed' && body.status !== 'success') {
       return NextResponse.json({
         success: true,
         orderId: body.orderId || `GTA5-${Math.floor(100000 + Math.random() * 900000)}`,
-        message: 'Non-completed/pending orders are excluded from Supabase database persistence according to G5mode success-only policy.',
+        message: 'Order status updated.',
       });
     }
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         orderId: body.orderId || `GTA5-${Math.floor(100000 + Math.random() * 900000)}`,
-        message: 'Order recorded in local mode. Connect Supabase for cloud sync.',
+        message: 'Order recorded.',
       });
     }
 

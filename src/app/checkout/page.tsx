@@ -1309,7 +1309,7 @@ function CheckoutContent() {
                           <input
                             type="tel"
                             className="co-phone-input"
-                            placeholder="98765 43210"
+                            placeholder=""
                             value={mobile}
                             onChange={(e) => setMobile(e.target.value.replace(/[^0-9]/g, ''))}
                             required

@@ -313,7 +313,7 @@ export function ProductsTab({
         onAddProduct(formattedSaved);
       }
 
-      setSaveSuccess('✓ Product successfully published and saved to Supabase mods table!');
+      setSaveSuccess('✓ Product successfully published and saved to database!');
       setTimeout(() => {
         setIsSavingProduct(false);
         setViewMode('list');
@@ -1037,7 +1037,7 @@ export function ProductsTab({
                 {isSavingProduct && <i className="fa fa-spinner fa-spin" />}
                 <span>
                   {isSavingProduct
-                    ? 'Saving to Supabase...'
+                    ? 'Saving to Database...'
                     : editingProduct
                     ? 'Save Product Changes'
                     : 'Publish Product to Store'}

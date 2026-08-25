@@ -149,15 +149,14 @@ export function AdminLayout() {
     const mappedTxns: AdminTransaction[] = orders
       .filter((o) => o.status === 'completed')
       .map((o) => {
-        const fee = Number((o.amountUsd * 0.03).toFixed(2));
         return {
           id: `TXN-${o.id.replace('ORD-', '')}`,
           orderId: o.id,
           gateway: o.paymentMethod,
           gatewayRef: o.gatewayTxnId || 'TXN_LOCAL',
           grossUsd: o.amountUsd,
-          feeUsd: fee,
-          netUsd: Number((o.amountUsd - fee).toFixed(2)),
+          feeUsd: 0,
+          netUsd: o.amountUsd,
           status: 'success',
           date: o.date,
           customer: o.customerName,

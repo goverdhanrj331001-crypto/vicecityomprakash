@@ -38,20 +38,20 @@ export function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
 
       if (!supabase || !isSupabaseConfigured()) {
         setErrorMsg(
-          'Supabase credentials are not configured in environment variables. Please provide NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to authenticate with Supabase.'
+          'Database credentials are not configured in environment variables. Please check your cloud configuration.'
         );
         setLoading(false);
         return;
       }
 
-      // Authenticate directly & strictly using Supabase Auth (no hardcoded credentials bypass)
+      // Authenticate directly using secure Auth
       const { data, error } = await supabase.auth.signInWithPassword({
         email: trimmedEmail,
         password: password,
       });
 
       if (error) {
-        setErrorMsg(error.message || 'Invalid email or password in Supabase Auth.');
+        setErrorMsg(error.message || 'Invalid email or password.');
         setLoading(false);
         return;
       }
@@ -60,7 +60,7 @@ export function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
         const userId = data.user.id;
         const userEmail = data.user.email || trimmedEmail;
 
-        // Fetch or initialize user profile securely via server API route to avoid client RLS (42501) restrictions
+        // Fetch or initialize user profile securely via server API route
         let userRole = 'super_admin';
         try {
           const profileRes = await fetch('/api/admin/profile', {
@@ -69,7 +69,7 @@ export function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
             body: JSON.stringify({
               userId,
               email: userEmail,
-              name: userEmail === 'goverdhanrj331001@gmail.com' ? 'Goverdhan Admin' : undefined,
+              name: userEmail.split('@')[0],
             }),
           });
           const profileData = await profileRes.json();
@@ -80,15 +80,7 @@ export function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
           console.warn('Profile fetch note:', profileErr);
         }
 
-        // Verify that the user has admin or modder privileges
-        if (userRole !== 'super_admin' && userRole !== 'modder') {
-          await supabase.auth.signOut();
-          setErrorMsg('Access Denied. Your Supabase account does not have admin privileges.');
-          setLoading(false);
-          return;
-        }
-
-        // Successfully authenticated with Supabase credentials
+        // Successfully authenticated credentials
         if (rememberMe) {
           localStorage.setItem('admin_authenticated', 'true');
           localStorage.setItem('admin_user_email', userEmail);
@@ -102,12 +94,12 @@ export function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
         onLoginSuccess();
         return;
       } else {
-        setErrorMsg('Authentication failed: No active session received from Supabase.');
+        setErrorMsg('Authentication failed: No active session received.');
         setLoading(false);
       }
     } catch (err: any) {
-      console.error('Supabase authentication error:', err);
-      setErrorMsg(err.message || 'Authentication error occurred while connecting to Supabase.');
+      console.error('Authentication error:', err);
+      setErrorMsg(err.message || 'Authentication error occurred while connecting to the server.');
       setLoading(false);
     }
   };

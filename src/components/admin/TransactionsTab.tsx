@@ -27,11 +27,9 @@ export function TransactionsTab({ transactions }: TransactionsTabProps) {
   });
 
   const totalGross = filtered.reduce((s, t) => s + t.grossUsd, 0);
-  const totalFees = filtered.reduce((s, t) => s + t.feeUsd, 0);
-  const totalNet = filtered.reduce((s, t) => s + t.netUsd, 0);
 
   const handleExportCSV = () => {
-    const headers = ['Transaction ID', 'Order ID', 'Customer', 'Gateway', 'Ref', 'Gross USD', 'Fee USD', 'Net USD', 'Status', 'Date'];
+    const headers = ['Transaction ID', 'Order ID', 'Customer', 'Gateway', 'Ref', 'Amount USD', 'Status', 'Date'];
     const rows = filtered.map((t) => [
       t.id,
       t.orderId,
@@ -39,8 +37,6 @@ export function TransactionsTab({ transactions }: TransactionsTabProps) {
       t.gateway,
       `"${t.gatewayRef}"`,
       t.grossUsd,
-      t.feeUsd,
-      t.netUsd,
       t.status,
       `"${t.date}"`,
     ]);
@@ -67,14 +63,14 @@ export function TransactionsTab({ transactions }: TransactionsTabProps) {
         </div>
         <div className="col-xs-12 col-sm-4" style={{ padding: '0 8px 12px' }}>
           <div style={{ backgroundColor: '#ffffff', padding: 16, borderRadius: 10, border: '1px solid #e2e8f0' }}>
-            <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Gateway Processing Fees</span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#dc2626' }}>${totalFees.toFixed(2)}</div>
+            <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Completed Transactions</span>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#0284c7' }}>{filtered.length} Orders</div>
           </div>
         </div>
         <div className="col-xs-12 col-sm-4" style={{ padding: '0 8px 12px' }}>
           <div style={{ backgroundColor: '#ffffff', padding: 16, borderRadius: 10, border: '1px solid #e2e8f0' }}>
             <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Net Earnings Payout</span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#15803d' }}>${totalNet.toFixed(2)}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#15803d' }}>${totalGross.toFixed(2)}</div>
           </div>
         </div>
       </div>
@@ -166,9 +162,7 @@ export function TransactionsTab({ transactions }: TransactionsTabProps) {
                 <th style={{ padding: '12px' }}>Customer</th>
                 <th style={{ padding: '12px' }}>Gateway</th>
                 <th style={{ padding: '12px' }}>Gateway Reference ID</th>
-                <th style={{ padding: '12px' }}>Gross</th>
-                <th style={{ padding: '12px' }}>Fee</th>
-                <th style={{ padding: '12px' }}>Net</th>
+                <th style={{ padding: '12px' }}>Amount</th>
                 <th style={{ padding: '12px' }}>Status</th>
               </tr>
             </thead>
@@ -185,8 +179,6 @@ export function TransactionsTab({ transactions }: TransactionsTabProps) {
                     {t.gatewayRef}
                   </td>
                   <td style={{ padding: '12px', fontWeight: 700, color: '#0f172a' }}>${t.grossUsd.toFixed(2)}</td>
-                  <td style={{ padding: '12px', color: '#dc2626' }}>-${t.feeUsd.toFixed(2)}</td>
-                  <td style={{ padding: '12px', fontWeight: 700, color: '#15803d' }}>${t.netUsd.toFixed(2)}</td>
                   <td style={{ padding: '12px' }}>
                     <span
                       style={{

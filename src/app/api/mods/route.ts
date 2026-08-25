@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
     const supabaseData = data || [];
     // If Supabase has data, return it directly
-    return NextResponse.json({ products: supabaseData, source: 'supabase' });
+    return NextResponse.json({ products: supabaseData, source: 'database' });
   } catch (err: any) {
     console.error('Error fetching mods from Supabase, falling back to local:', err);
     const localProducts = getAllProducts();

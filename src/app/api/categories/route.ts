@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       status: c.status || 'active',
     }));
 
-    return NextResponse.json({ categories: formatted, source: 'supabase' });
+    return NextResponse.json({ categories: formatted, source: 'database' });
   } catch (err: any) {
     console.error('Error fetching categories from Supabase:', err);
     return NextResponse.json({ categories: [], source: 'error_empty' });
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         category: body,
-        message: 'Saved to local preview. Connect Supabase for cloud sync.',
+        message: 'Saved to local preview.',
       });
     }
 

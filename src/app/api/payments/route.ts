@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
       }
     });
 
-    return NextResponse.json({ config, source: 'supabase' });
+    return NextResponse.json({ config, source: 'database' });
   } catch (err: any) {
     console.error('Error fetching payment gateways from Supabase:', err);
     return NextResponse.json({ config: INITIAL_PAYMENT_CONFIG, source: 'error_fallback' });
@@ -166,9 +166,9 @@ export async function POST(req: NextRequest) {
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, message: 'Payment configurations saved to Supabase successfully.' });
+    return NextResponse.json({ success: true, message: 'Payment configurations saved successfully.' });
   } catch (err: any) {
-    console.error('Error saving payment gateways to Supabase:', err);
+    console.error('Error saving payment gateways to database:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

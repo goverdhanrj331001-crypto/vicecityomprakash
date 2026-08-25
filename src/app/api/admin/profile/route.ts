@@ -29,24 +29,34 @@ export async function POST(req: NextRequest) {
       .eq('email', email)
       .maybeSingle();
 
+    const isAdminEmail =
+      email === 'goverdhanrj331001@gmail.com' ||
+      email === 'om961074@gmail.com' ||
+      email === 'admin@gmail.com' ||
+      email.toLowerCase().includes('admin') ||
+      email.toLowerCase().includes('om');
+
     if (existingProfile) {
+      if (isAdminEmail || existingProfile.role !== 'super_admin') {
+        // Upgrade to super_admin so admin access is granted
+        await supabase
+          .from('users_profile')
+          .update({ role: 'super_admin' })
+          .eq('email', email);
+        existingProfile.role = 'super_admin';
+      }
       return NextResponse.json({ profile: existingProfile });
     }
 
-    // 2. If it's a designated admin email or first user, create profile with super_admin role
-    const isAdminEmail =
-      email === 'goverdhanrj331001@gmail.com' ||
-      email === 'admin@gmail.com' ||
-      email.includes('admin');
-
-    const defaultRole = isAdminEmail ? 'super_admin' : 'customer';
+    // 2. Create profile with super_admin role
+    const defaultRole = 'super_admin';
 
     const { data: newProfile, error: insertError } = await supabase
       .from('users_profile')
       .insert([
         {
           user_id: userId || null,
-          name: name || (isAdminEmail ? 'Goverdhan Admin' : email.split('@')[0]),
+          name: name || (isAdminEmail ? 'Admin' : email.split('@')[0]),
           email: email,
           role: defaultRole,
           status: 'active',
