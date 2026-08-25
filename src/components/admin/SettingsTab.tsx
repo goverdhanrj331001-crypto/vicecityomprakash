@@ -121,32 +121,6 @@ export function SettingsTab({ settings, onSaveSettings }: SettingsTabProps) {
                 </div>
               </div>
 
-              <div className="row" style={{ margin: 0 }}>
-                <div className="col-sm-6" style={{ padding: '0 8px 12px' }}>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 4 }}>
-                    Support WhatsApp / Phone
-                  </label>
-                  <input
-                    type="text"
-                    value={form.supportPhone}
-                    onChange={(e) => setForm({ ...form, supportPhone: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
-                  />
-                </div>
-
-                <div className="col-sm-6" style={{ padding: '0 8px 12px' }}>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 4 }}>
-                    USD to INR Conversion Rate (₹)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={form.usdToInrRate}
-                    onChange={(e) => setForm({ ...form, usdToInrRate: parseFloat(e.target.value) || 83.5 })}
-                    style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
-                  />
-                </div>
-              </div>
 
               <div style={{ backgroundColor: '#f8fafc', padding: 14, borderRadius: 8, border: '1px solid #e2e8f0', marginTop: 10 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 600, color: '#dc2626', cursor: 'pointer', margin: 0 }}>
