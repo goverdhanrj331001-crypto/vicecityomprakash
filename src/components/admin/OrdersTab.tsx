@@ -448,7 +448,7 @@ export function OrdersTab({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Goverdhan Sharma"
+                  placeholder="e.g. omprakasah Sharma"
                   value={manualName}
                   onChange={(e) => setManualName(e.target.value)}
                   style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}

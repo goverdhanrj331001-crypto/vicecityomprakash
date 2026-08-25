@@ -75,8 +75,8 @@ export interface AdminUser {
 export const INITIAL_ORDERS: AdminOrder[] = [
   {
     id: 'ORD-9842',
-    customerName: 'Goverdhan Sharma',
-    customerEmail: 'goverdhan@example.com',
+    customerName: 'omprakasah Sharma',
+    customerEmail: 'omprakasah@example.com',
     customerMobile: '0000000000',
     country: 'India',
     countryFlag: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg',
@@ -293,7 +293,7 @@ export const INITIAL_CATEGORIES: AdminCategory[] = [
 ];
 
 export const INITIAL_TRANSACTIONS: AdminTransaction[] = [
-  { id: 'TXN-77491', orderId: 'ORD-9842', gateway: 'upi', gatewayRef: 'UPI/23984710293/PAYTM', grossUsd: 4.99, feeUsd: 0.05, netUsd: 4.94, status: 'success', date: '2026-08-21 11:42 AM', customer: 'Goverdhan Sharma' },
+  { id: 'TXN-77491', orderId: 'ORD-9842', gateway: 'upi', gatewayRef: 'UPI/23984710293/PAYTM', grossUsd: 4.99, feeUsd: 0.05, netUsd: 4.94, status: 'success', date: '2026-08-21 11:42 AM', customer: 'omprakasah Sharma' },
   { id: 'TXN-77490', orderId: 'ORD-9841', gateway: 'paypal', gatewayRef: 'PAYPAL_883291049281', grossUsd: 9.99, feeUsd: 0.49, netUsd: 9.50, status: 'success', date: '2026-08-21 10:15 AM', customer: 'Alex Rivera' },
   { id: 'TXN-77489', orderId: 'ORD-9840', gateway: 'razorpay', gatewayRef: 'pay_N83921839218', grossUsd: 6.50, feeUsd: 0.13, netUsd: 6.37, status: 'success', date: '2026-08-21 09:30 AM', customer: 'Vikram Singh' },
   { id: 'TXN-77488', orderId: 'ORD-9839', gateway: 'binance', gatewayRef: 'BINANCE_USDT_881920192', grossUsd: 12.00, feeUsd: 0.12, netUsd: 11.88, status: 'success', date: '2026-08-21 08:05 AM', customer: 'Dmitry Volkov' },
@@ -301,7 +301,7 @@ export const INITIAL_TRANSACTIONS: AdminTransaction[] = [
 ];
 
 export const INITIAL_USERS: AdminUser[] = [
-  { id: 'USR-001', name: 'Goverdhan Admin', email: 'goverdhanrj331001@gmail.com', mobile: '0000000000', role: 'super_admin', ordersCount: 18, totalSpent: 142.50, status: 'active', joinedDate: '2026-01-01', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80' },
+  { id: 'USR-001', name: 'omprakasah Admin', email: 'om961074@gmail.com', mobile: '0000000000', role: 'super_admin', ordersCount: 18, totalSpent: 142.50, status: 'active', joinedDate: '2026-01-01', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80' },
   { id: 'USR-002', name: 'Alex Rivera', email: 'alex.rivera@gmail.com', mobile: '14155552671', role: 'customer', ordersCount: 4, totalSpent: 38.96, status: 'active', joinedDate: '2026-03-12', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80' },
   { id: 'USR-003', name: 'GtaModderPro', email: 'modderpro@5mods.com', mobile: '9123456789', role: 'modder', ordersCount: 1, totalSpent: 4.99, status: 'active', joinedDate: '2026-02-18', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80' },
   { id: 'USR-004', name: 'Vikram Singh', email: 'vikram.singh@yahoo.com', mobile: '9988776655', role: 'customer', ordersCount: 6, totalSpent: 52.00, status: 'active', joinedDate: '2026-04-05', avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=120&q=80' },

@@ -530,7 +530,7 @@ INSERT INTO public.orders (
     order_id, customer_name, customer_email, customer_mobile, country, 
     mod_title, mod_slug, mod_category, payment_method, amount_usd, amount_inr, status, gateway_txn_id
 ) VALUES
-('ORD-9842', 'Goverdhan Sharma', 'goverdhan@example.com', '0000000000', 'India', 'Purple Cat Girl Livery - Annis Elegy RH-7', 'purple-cat-girl-livery-annis-elegy-rh-7', 'paintjobs', 'upi', 4.99, 415, 'completed', 'UPI/23984710293/PAYTM'),
+('ORD-9842', 'omprakasah Sharma', 'omprakasah@example.com', '0000000000', 'India', 'Purple Cat Girl Livery - Annis Elegy RH-7', 'purple-cat-girl-livery-annis-elegy-rh-7', 'paintjobs', 'upi', 4.99, 415, 'completed', 'UPI/23984710293/PAYTM'),
 ('ORD-9841', 'Alex Rivera', 'alex.rivera@gmail.com', '14155552671', 'United States', '2024 Bugatti Chiron Super Sport 300+ Custom', '2024-bugatti-chiron-super-sport-300', 'vehicles', 'paypal', 9.99, 830, 'completed', 'PAYPAL_883291049281'),
 ('ORD-9840', 'Vikram Singh', 'vikram.singh@yahoo.com', '9988776655', 'India', 'Ultra-Realistic Photoreal Graphics ENB & ReShade', 'ultra-realistic-graphics-enb-reshade-2026', 'scripts', 'razorpay', 6.50, 540, 'completed', 'RZP_PAY_982341234')
 ON CONFLICT (order_id) DO NOTHING;

@@ -263,7 +263,7 @@ export function AdminTopbar({
               }}
             >
               <div style={{ padding: '8px 16px', borderBottom: `1px solid ${borderColor}` }}>
-                <div style={{ fontWeight: 700, fontSize: 13, color: textColor }}>Goverdhan Admin</div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: textColor }}>omprakasah Admin</div>
                 <div style={{ fontSize: 11, color: subTextColor }}>admin@5mods.com</div>
               </div>
               <button

@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const isAdminEmail =
-      email === 'goverdhanrj331001@gmail.com' ||
+      email === 'om961074@gmail.com' ||
       email === 'om961074@gmail.com' ||
       email === 'admin@gmail.com' ||
       email.toLowerCase().includes('admin') ||
