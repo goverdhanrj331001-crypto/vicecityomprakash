@@ -1,0 +1,2412 @@
+/* Custom Styles for GTA5-Mods Applet */
+
+/* ========================================================
+   HEADER & NAVBAR (Authentic GTA5-Mods #dc2626 Design)
+   ======================================================== */
+#main-nav {
+  position: relative !important;
+  background-color: #dc2626 !important;
+  background: #dc2626 !important;
+  transition: background-color 0.25s ease;
+  min-height: 52px !important;
+  margin-bottom: 0 !important;
+  z-index: 1000 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+#main-nav .container.nav-flex-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-height: 52px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  gap: 16px;
+}
+
+/* Right: Moon Theme Toggle */
+.nav-right-toggle {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.06);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* 2. Center-Left: Brand Logo */
+.nav-brand-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#main-nav .navbar-brand {
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  display: block;
+  width: 95px;
+  height: 36px;
+  background: url("../images/logo.png") no-repeat center;
+  background-size: contain;
+}
+
+/* 3. Center-Right: Wide Stretched Search Box */
+#main-nav .nav-center-search {
+  flex: 1 1 auto;
+  width: 100%;
+  position: relative;
+}
+
+.search-box-form {
+  margin: 0;
+  width: 100%;
+}
+
+.search-box-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  padding: 0 14px;
+  height: 38px;
+  transition: all 0.2s ease-in-out;
+}
+
+.search-box-wrapper:focus-within {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+.search-box-wrapper .search-icon {
+  margin-right: 10px;
+  color: #64748b;
+  font-size: 14px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.search-box-wrapper .search-input {
+  width: 100%;
+  flex: 1;
+  height: 36px;
+  padding: 0;
+  font-size: 13.5px;
+  color: #1e293b;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.search-box-wrapper .search-input::placeholder {
+  color: #64748b;
+}
+
+.search-clear-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 0 6px;
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.search-clear-btn:hover {
+  color: #475569;
+}
+  text-align: center;
+  background-color: #f8fafc;
+  transition: border-color 0.2s ease;
+}
+
+.upload-dropzone:hover {
+  border-color: #dc2626;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================================
+   DESKTOP CATEGORY BANNER (Screens >= 992px)
+   ======================================================== */
+@media (min-width: 992px) {
+  .story-categories-wrapper {
+    display: none !important;
+  }
+  .desktop-category-banner {
+    display: block !important;
+  }
+  #banner {
+    position: relative;
+    height: 240px !important;
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.72) 70%, rgba(15, 23, 42, 0.95) 100%), #1e293b url("/images/cabin.jpg") no-repeat center bottom !important;
+    background-size: cover !important;
+    margin-top: 0 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  #navigation {
+    margin-top: 85px !important;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  #navigation > li {
+    float: none !important;
+    flex: 1 1 0;
+    text-align: center;
+  }
+  #navigation > li > a {
+    display: block;
+    text-decoration: none !important;
+  }
+  #navigation > li .icon-category {
+    display: block;
+    height: 115px;
+    background: url("../images/navigation-091116.png") no-repeat center top;
+    opacity: 0.95 !important;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.9)) !important;
+    transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+  }
+  #navigation > li:hover .icon-category {
+    opacity: 1 !important;
+    transform: translateY(-2px);
+    filter: drop-shadow(0 4px 10px rgba(32, 186, 78, 0.85)) !important;
+  }
+  #navigation > li .label-border {
+    display: block;
+    height: 3px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+  #navigation > li:hover .label-border,
+  #navigation > li.active .label-border {
+    background: #dc2626 !important;
+  }
+  #navigation > li .label-category {
+    display: block;
+    text-align: center;
+  }
+  #navigation > li .label-category > span {
+    display: block;
+    background: #ffffff !important;
+    color: #1e293b !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    height: 35px !important;
+    line-height: 35px !important;
+    border-right: 1px solid #e2e8f0 !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  #navigation > li:last-child .label-category > span {
+    border-right: none !important;
+  }
+  #navigation > li:hover .label-category > span {
+    background: #f8fafc !important;
+    color: #dc2626 !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .desktop-category-banner {
+    display: none !important;
+  }
+  .story-categories-wrapper {
+    display: block !important;
+  }
+}
+
+/* ========================================================
+   MOBILE & TABLET INSTAGRAM STORY STYLE ROUND CAROUSEL (< 992px)
+   ======================================================== */
+.story-categories-wrapper {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 14px 0 10px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.story-carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.story-carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 6px 10px;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  align-items: flex-start;
+}
+
+.story-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none !important;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 76px;
+}
+
+.story-item:hover {
+  transform: translateY(-2px);
+}
+
+.story-ring {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  padding: 2.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+.story-item:hover .story-ring {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.story-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  overflow: hidden;
+  position: relative;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.35s ease;
+}
+
+.story-icon-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.story-badge {
+  position: absolute;
+  bottom: -3px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 1.5px solid #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.story-label {
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  max-width: 76px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.story-item:hover .story-label {
+  color: #dc2626;
+}
+
+.story-nav-btn {
+  position: absolute;
+  top: 34px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.story-nav-btn:hover {
+  background: #f9fafb;
+  color: #dc2626;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.story-nav-prev {
+  left: -8px;
+}
+
+.story-nav-next {
+  right: -8px;
+}
+
+/* ========================================================
+   MOD CARDS / PRODUCT BOXES (Remove black gradient below image)
+   ======================================================== */
+.file-list-obj {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 245px !important;
+  height: 245px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  text-decoration: none !important;
+  position: relative !important;
+}
+
+.file-list-obj:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Eliminate dark gradient overlay and empty black block */
+.file-list-obj .preview:after,
+.file-list-obj:after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+.file-list-obj .preview,
+.file-list-obj .preview.empty {
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  height: 165px !important;
+  max-height: 165px !important;
+  min-height: 165px !important;
+  width: 100% !important;
+  background: #f1f5f9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.file-list-obj .preview img,
+.file-list-obj .preview .mod-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 165px !important;
+  min-height: 165px !important;
+  object-fit: cover !important;
+  display: block !important;
+  opacity: 1 !important;
+  transition: transform 0.25s ease !important;
+}
+
+.file-list-obj:hover .preview img {
+  transform: scale(1.04);
+}
+
+.file-list-obj .details {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+}
+
+.file-list-obj .details .top {
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+
+.file-list-obj .details .top .name {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  color: #1e293b !important;
+  height: 36px !important;
+}
+
+.file-list-obj .details .top .name a {
+  color: #1e293b !important;
+  text-decoration: none !important;
+}
+
+.file-list-obj .details .top .name a:hover {
+  color: #dc2626 !important;
+}
+
+.file-list-obj .details .bottom {
+  font-size: 12px !important;
+  color: #64748b !important;
+  margin-top: 4px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.file-list-obj .details .bottom a {
+  color: #0284c7 !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+}
+
+.file-list-obj .details .bottom a:hover {
+  text-decoration: underline !important;
+}
+
+/* ========================================================
+   DARK MODE
+   ======================================================== */
+body.dark-mode {
+  background-color: #121316 !important;
+  color: #e4e6eb !important;
+}
+
+body.dark-mode #main-nav {
+  background-color: #dc2626 !important;
+  background: #dc2626 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .theme-toggle-btn {
+  background: rgba(0, 0, 0, 0.25) !important;
+  color: #fef08a !important;
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .search-box-wrapper {
+  background-color: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.dark-mode .search-box-wrapper .search-input {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .search-box-wrapper .search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .search-box-wrapper .search-icon {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode #banner {
+  background: linear-gradient(to bottom, rgba(10, 15, 25, 0.6) 0%, rgba(10, 15, 25, 0.85) 70%, rgba(10, 15, 25, 0.98) 100%), #0f172a url("/images/cabin.jpg") no-repeat center bottom !important;
+  background-size: cover !important;
+}
+
+body.dark-mode #navigation > li .label-category > span {
+  background: #1c2026 !important;
+  color: #e2e8f0 !important;
+  border-right-color: #2d333f !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode #navigation > li:hover .label-category > span {
+  background: #242932 !important;
+  color: #dc2626 !important;
+}
+
+body.dark-mode .story-categories-wrapper {
+  background-color: #16181d !important;
+  border-bottom-color: #262a32 !important;
+}
+
+body.dark-mode .story-circle {
+  border-color: #16181d !important;
+}
+
+body.dark-mode .story-badge {
+  border-color: #16181d !important;
+}
+
+body.dark-mode .story-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .story-item:hover .story-label {
+  color: #38bdf8 !important;
+}
+
+body.dark-mode .story-nav-btn {
+  background: #232830 !important;
+  border-color: #383e4c !important;
+  color: #f1f3f4 !important;
+}
+
+body.dark-mode .story-nav-btn:hover {
+  background: #2c323d !important;
+  color: #38bdf8 !important;
+}
+
+body.dark-mode .search-box-wrapper {
+  background-color: #242830 !important;
+  border-color: #383e4c !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .search-box-wrapper:focus-within {
+  background-color: #2c313c !important;
+  border-color: #dc2626 !important;
+}
+
+body.dark-mode .search-box-wrapper .search-icon {
+  color: #9aa0a6 !important;
+}
+
+body.dark-mode .search-box-wrapper .search-input {
+  color: #f1f3f4 !important;
+}
+
+body.dark-mode .search-box-wrapper .search-input::placeholder {
+  color: #88909b !important;
+}
+
+body.dark-mode .theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fbbf24 !important;
+}
+
+body.dark-mode #content {
+  background: #121316 !important;
+}
+
+/* Featured Section Dark Mode */
+body.dark-mode #featured-carousel-section .featured-heading-wrapper {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode #featured-carousel-section h3 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .carousel-arrow-btn {
+  background-color: #232830 !important;
+  border-color: #383e4c !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .carousel-arrow-btn:hover {
+  background-color: #2c323d !important;
+  color: #dc2626 !important;
+}
+
+/* Detail Page & Sticky Sidebar Dark Mode (Image 1 fix) */
+body.dark-mode #file h1 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .panel-default {
+  background-color: #1c2026 !important;
+  border-color: #2d333f !important;
+  color: #e4e6eb !important;
+}
+
+body.dark-mode .panel-body {
+  background-color: #1c2026 !important;
+  color: #e4e6eb !important;
+}
+
+body.dark-mode .digital-buy-panel {
+  background: #1c2026 !important;
+  border-color: #29392e !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .digital-price-header {
+  background: #17241b !important;
+  border-bottom-color: #243b2a !important;
+}
+
+body.dark-mode .digital-license-title {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .digital-price-amount {
+  color: #4ade80 !important;
+}
+
+body.dark-mode .digital-delivery-badge {
+  background: #1d3824 !important;
+  border-color: #295734 !important;
+  color: #4ade80 !important;
+}
+
+body.dark-mode .digital-inclusions-list {
+  color: #cbd5e1 !important;
+  border-top-color: #2d333f !important;
+}
+
+body.dark-mode .digital-inclusions-banner {
+  background: #17241b !important;
+  border-color: #243d2b !important;
+}
+
+body.dark-mode .digital-inclusions-list-desc {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .digital-creator-panel {
+  background: #1c2026 !important;
+  border-color: #2d333f !important;
+}
+
+body.dark-mode .digital-creator-panel .creator-label-text {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .digital-creator-panel .creator-verified-text {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .nav-tabs {
+  border-bottom-color: #2d333f !important;
+}
+
+body.dark-mode .nav-tabs > li.active > a,
+body.dark-mode .nav-tabs > li.active > a:hover,
+body.dark-mode .nav-tabs > li.active > a:focus {
+  background-color: #1c2026 !important;
+  color: #f1f5f9 !important;
+  border-color: #2d333f #2d333f transparent !important;
+}
+
+body.dark-mode .nav-tabs > li > a {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .digital-sticky-mobile-bar {
+  background-color: #1c2026 !important;
+  border-top-color: #2d333f !important;
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .mobile-bar-price-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .mobile-bar-price-val {
+  color: #4ade80 !important;
+}
+
+body.dark-mode .digital-checkout-modal-panel {
+  background: #1c2026 !important;
+  border-color: #2d333f !important;
+}
+
+body.dark-mode .modal-checkout-body {
+  background: #1c2026 !important;
+  color: #e4e6eb !important;
+}
+
+body.dark-mode .modal-sub-txt {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .modal-title-txt {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .modal-features-box {
+  background-color: #16181d !important;
+  border-color: #2d333f !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .file-list-obj {
+  background: #1c2026 !important;
+  border-color: #2d333f !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+
+body.dark-mode .file-list-obj .preview,
+body.dark-mode .file-list-obj .preview.empty {
+  background: #16181d !important;
+}
+
+body.dark-mode .file-list-obj .details {
+  background: #1c2026 !important;
+}
+
+body.dark-mode .file-list-obj .details .top .name a {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .file-list-obj .details .top .name a:hover {
+  color: #dc2626 !important;
+}
+
+body.dark-mode .file-list-obj .details .bottom {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .file-list-obj .details .bottom a {
+  color: #38bdf8 !important;
+}
+
+body.dark-mode #footer,
+body.dark-mode footer {
+  background: #181a1f !important;
+  border-top: 1px solid #262a32 !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode #footer a,
+body.dark-mode footer a {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode #footer a:hover,
+body.dark-mode footer a:hover {
+  color: #dc2626 !important;
+}
+
+/* Sticky sidebar for desktop */
+@media (min-width: 992px) {
+  .digital-sidebar-sticky {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 20px !important;
+    z-index: 30 !important;
+    align-self: flex-start !important;
+  }
+}
+
+/* ========================================================
+   RESPONSIVE CHECKOUT PAGE (Desktop: Details top, Payment bottom | Mobile: Payment top, Details bottom)
+   ======================================================== */
+.checkout-form-responsive-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-details-section {
+  order: 1;
+}
+
+.checkout-payment-section {
+  order: 2;
+}
+
+@media (max-width: 767px) {
+  /* On mobile: Payment method section is at the TOP, Customer details below it */
+  .checkout-form-responsive-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .checkout-payment-section {
+    order: 1 !important;
+    margin-bottom: 20px;
+  }
+  .checkout-details-section {
+    order: 2 !important;
+    margin-bottom: 20px;
+  }
+  .payment-methods-grid-page {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Dark Mode styles for Checkout Page */
+body.dark-mode .checkout-page-wrapper {
+  color: #f1f5f9;
+}
+
+body.dark-mode .checkout-main-panel,
+body.dark-mode .checkout-summary-panel,
+body.dark-mode .checkout-success-card .panel {
+  background-color: #1a1d24 !important;
+  border-color: #2d333f !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-page-header,
+body.dark-mode .checkout-summary-panel .panel-heading {
+  background-color: #14161b !important;
+  border-bottom-color: #2d333f !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-page-header h3,
+body.dark-mode .checkout-details-section h4,
+body.dark-mode .checkout-payment-section h4 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-page-input {
+  background-color: #14161b !important;
+  border-color: #2d333f !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-page-input::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .checkout-details-section label,
+body.dark-mode .checkout-payment-section label {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .payment-tab-box {
+  background-color: #14161b !important;
+  border-color: #2d333f !important;
+}
+
+body.dark-mode .payment-tab-box.active {
+  background-color: #112e1b !important;
+  border-color: #dc2626 !important;
+}
+
+body.dark-mode .payment-tab-box div {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-summary-panel .panel-body,
+body.dark-mode .checkout-main-panel .panel-body {
+  background-color: #1a1d24 !important;
+}
+
+/* Dark Mode styles for Checkout Modal */
+body.dark-mode .checkout-modal-container {
+  background-color: #1a1d24 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #2d333f !important;
+}
+
+body.dark-mode .checkout-item-preview {
+  background-color: #14161b !important;
+  border-color: #262a32 !important;
+}
+
+body.dark-mode .checkout-input {
+  background-color: #14161b !important;
+  border-color: #2d333f !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-input::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .payment-option-card {
+  background-color: #14161b !important;
+  border-color: #2d333f !important;
+}
+
+body.dark-mode .payment-option-card.active {
+  background-color: #112e1b !important;
+  border-color: #dc2626 !important;
+}
+
+body.dark-mode .payment-option-card div div {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .checkout-section-details label,
+body.dark-mode .checkout-section-payment label {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .checkout-section-details span,
+body.dark-mode .checkout-section-payment span {
+  color: #f1f5f9 !important;
+}
+
+/* ========================================================
+   ADMIN PANEL OPEN SANS FONT STYLING & DARK MODE
+   ======================================================== */
+.admin-portal,
+.admin-portal *:not(.fa):not(.fas):not(.far):not(.fab):not([class*="fa-"]),
+.admin-login-wrapper,
+.admin-login-wrapper *:not(.fa):not(.fas):not(.far):not(.fab):not([class*="fa-"]) {
+  font-family: 'Open Sans', sans-serif !important;
+  font-optical-sizing: auto;
+}
+
+/* DARK MODE OVERRIDES FOR ADMIN PORTAL CARDS & TABLES */
+.admin-portal.dark-mode div,
+.admin-portal.dark-mode main {
+  border-color: #27272a;
+}
+
+.admin-portal.dark-mode div[style*="background-color: #ffffff"],
+.admin-portal.dark-mode div[style*="backgroundColor: '#ffffff'"],
+.admin-portal.dark-mode div[style*="background: #ffffff"],
+.admin-portal.dark-mode div[style*="backgroundColor: \"#ffffff\""],
+.admin-portal.dark-mode div[style*="backgroundColor: '#f8fafc'"],
+.admin-portal.dark-mode div[style*="backgroundColor: '#fafafa'"] {
+  background-color: #18181b !important;
+  color: #f4f4f5 !important;
+  border-color: #27272a !important;
+}
+
+.admin-portal.dark-mode h1,
+.admin-portal.dark-mode h2,
+.admin-portal.dark-mode h3,
+.admin-portal.dark-mode h4,
+.admin-portal.dark-mode h5,
+.admin-portal.dark-mode h6 {
+  color: #ffffff !important;
+}
+
+.admin-portal.dark-mode p,
+.admin-portal.dark-mode label,
+.admin-portal.dark-mode td,
+.admin-portal.dark-mode th {
+  color: #e4e4e7 !important;
+}
+
+.admin-portal.dark-mode input[type="text"],
+.admin-portal.dark-mode input[type="number"],
+.admin-portal.dark-mode input[type="email"],
+.admin-portal.dark-mode input[type="password"],
+.admin-portal.dark-mode select,
+.admin-portal.dark-mode textarea {
+  background-color: #09090b !important;
+  color: #ffffff !important;
+  border-color: #27272a !important;
+}
+
+.admin-portal.dark-mode select option {
+  background-color: #18181b !important;
+  color: #ffffff !important;
+}
+
+.admin-portal.dark-mode table thead tr {
+  background-color: #27272a !important;
+}
+
+.admin-portal.dark-mode table tbody tr {
+  border-bottom-color: #27272a !important;
+}
+
+.admin-portal.dark-mode table tbody tr:hover {
+  background-color: #27272a !important;
+}
+
+.admin-portal.dark-mode span[style*="color: '#0f172a'"],
+.admin-portal.dark-mode span[style*="color: '#1e293b'"],
+.admin-portal.dark-mode span[style*="color: '#334155'"],
+.admin-portal.dark-mode div[style*="color: '#0f172a'"],
+.admin-portal.dark-mode div[style*="color: '#1e293b'"],
+.admin-portal.dark-mode div[style*="color: '#334155'"] {
+  color: #f4f4f5 !important;
+}
+
+/* Override all light-gray/white badges/pills and inline style boxes in dark mode to be black/dark */
+.admin-portal.dark-mode span[style*="background-color: rgb(244, 244, 245)"],
+.admin-portal.dark-mode span[style*="backgroundColor: '#f4f4f5'"],
+.admin-portal.dark-mode span[style*="background-color:#f4f4f5"],
+.admin-portal.dark-mode span[style*="background-color: #f4f4f5"],
+.admin-portal.dark-mode span[style*="background-color: rgb(250, 250, 250)"],
+.admin-portal.dark-mode span[style*="backgroundColor: '#fafafa'"],
+.admin-portal.dark-mode span[style*="background-color:#fafafa"],
+.admin-portal.dark-mode span[style*="background-color: #fafafa"],
+.admin-portal.dark-mode div[style*="background-color: rgb(244, 244, 245)"],
+.admin-portal.dark-mode div[style*="backgroundColor: '#f4f4f5'"],
+.admin-portal.dark-mode div[style*="background-color:#f4f4f5"],
+.admin-portal.dark-mode div[style*="background-color: #f4f4f5"],
+.admin-portal.dark-mode div[style*="background-color: rgb(250, 250, 250)"],
+.admin-portal.dark-mode div[style*="backgroundColor: '#fafafa'"],
+.admin-portal.dark-mode div[style*="background-color:#fafafa"],
+.admin-portal.dark-mode div[style*="background-color: #fafafa"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #27272a !important;
+}
+
+/* Force black background on image previews in dark mode */
+.admin-portal.dark-mode div[style*="width: 60"] {
+  background-color: #000000 !important;
+  border-color: #27272a !important;
+}
+
+@media (max-width: 767px) {
+  #main-nav .nav-center-search {
+    margin: 0 8px;
+  }
+  .search-box-wrapper .search-input {
+    font-size: 12px;
+    padding-left: 32px;
+  }
+  .search-box-wrapper .search-icon {
+    left: 10px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  .nav-right-toggle {
+    gap: 6px !important;
+  }
+  .nav-right-toggle a {
+    padding: 6px 10px !important;
+  }
+}
+
+/* View Toggle Styles */
+.list-view-container .list-view-item {
+  margin-bottom: 16px;
+}
+.list-view-container .list-view-item .file-list-obj {
+  display: flex;
+  flex-direction: row;
+  height: 120px;
+}
+.list-view-container .list-view-item .file-list-obj .preview {
+  width: 200px;
+  flex-shrink: 0;
+  height: 100%;
+}
+.list-view-container .list-view-item .file-list-obj .details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+}
+.list-view-container .list-view-item .file-list-obj .details .top .name {
+  font-size: 16px;
+  white-space: normal;
+}
+@media (max-width: 480px) {
+  .list-view-container .list-view-item .file-list-obj {
+    height: 90px;
+  }
+  .list-view-container .list-view-item .file-list-obj .preview {
+    width: 130px;
+  }
+  .list-view-container .list-view-item .file-list-obj .details {
+    padding: 8px 12px;
+  }
+  .list-view-container .list-view-item .file-list-obj .details .top .name {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+}
+
+/* ========================================================
+   MOBILE BOTTOM NAVIGATION BAR (Screens <= 768px)
+   ======================================================== */
+.mobile-bottom-navigation {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(60px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -3px 16px rgba(0, 0, 0, 0.06);
+  z-index: 99999;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-navigation {
+    display: block !important;
+  }
+  body {
+    padding-bottom: calc(65px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+.mobile-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 60px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 4px;
+}
+
+.mobile-nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  text-decoration: none !important;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: all 0.2s ease;
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-tab:hover,
+.mobile-nav-tab:focus {
+  color: #dc2626;
+  text-decoration: none;
+}
+
+.mobile-nav-tab.active {
+  color: #dc2626 !important;
+}
+
+.mobile-tab-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  margin-bottom: 2px;
+}
+
+.mobile-tab-icon {
+  font-size: 18px !important;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mobile-nav-tab:active .mobile-tab-icon {
+  transform: scale(0.85);
+}
+
+.mobile-nav-tab.active .mobile-tab-icon {
+  transform: scale(1.1);
+}
+
+.mobile-tab-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.mobile-nav-tab.active .mobile-tab-label {
+  font-weight: 700;
+}
+
+.mobile-tab-indicator {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 4px;
+  background-color: #dc2626;
+  border-radius: 50%;
+}
+
+.mobile-nav-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 1.5px solid #ffffff;
+}
+
+/* ========================================================
+   MOBILE CATEGORY SHEET DRAWER
+   ======================================================== */
+.mobile-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeInBackdrop 0.2s ease-out;
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobile-sheet-content {
+  width: 100%;
+  max-width: 540px;
+  background: #ffffff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.2);
+  padding: 18px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpSheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.mobile-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sheet-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sheet-title-wrapper h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.sheet-close-btn {
+  background: #f1f5f9;
+  border: none;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sheet-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.mobile-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.mobile-sheet-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 6px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  text-decoration: none !important;
+  color: #334155;
+  transition: all 0.2s ease;
+}
+
+.mobile-sheet-item:hover,
+.mobile-sheet-item:active {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  transform: translateY(-2px);
+}
+
+.mobile-sheet-item.active {
+  background: #f0fdf4;
+  border-color: #dc2626;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.sheet-item-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.sheet-item-name {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.mobile-sheet-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.sheet-admin-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease;
+}
+
+.sheet-admin-btn:hover {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.sheet-theme-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sheet-theme-btn:hover {
+  background: #e2e8f0;
+}
+
+/* ========================================================
+   DARK MODE ADJUSTMENTS FOR MOBILE BOTTOM BAR & SHEET
+   ======================================================== */
+body.dark-mode .mobile-bottom-navigation {
+  background: rgba(18, 18, 20, 0.94);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .mobile-nav-tab {
+  color: #94a3b8;
+}
+
+body.dark-mode .mobile-nav-tab.active {
+  color: #dc2626 !important;
+}
+
+body.dark-mode .mobile-nav-badge {
+  border-color: #121214;
+}
+
+body.dark-mode .mobile-sheet-content {
+  background: #18181b;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .mobile-sheet-header,
+body.dark-mode .mobile-sheet-footer {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .sheet-title-wrapper h3 {
+  color: #f8fafc;
+}
+
+body.dark-mode .sheet-close-btn {
+  background: #27272a;
+  color: #94a3b8;
+}
+
+body.dark-mode .sheet-close-btn:hover {
+  background: #3f3f46;
+  color: #ffffff;
+}
+
+body.dark-mode .mobile-sheet-item {
+  background: #27272a;
+  border-color: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+body.dark-mode .mobile-sheet-item:hover,
+body.dark-mode .mobile-sheet-item:active {
+  background: #1e3a29;
+  border-color: #dc2626;
+}
+
+body.dark-mode .mobile-sheet-item.active {
+  background: #1e3a29;
+  border-color: #dc2626;
+  color: #4ade80;
+}
+
+body.dark-mode .sheet-admin-btn {
+  background: #27272a;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .sheet-admin-btn:hover {
+  background: #3f3f46;
+}
+
+body.dark-mode .sheet-theme-btn {
+  background: #27272a;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .sheet-theme-btn:hover {
+  background: #3f3f46;
+}
+
+/* ========================================================
+   NOWPAYMENTS CRYPTO SIMULATOR (Sandbox Mode)
+   ======================================================== */
+.nowpay-sim-container {
+  min-height: calc(100vh - 52px);
+  background-color: #f8fafc;
+  padding: 40px 16px;
+  color: #334155;
+  transition: all 0.25s ease;
+}
+
+.nowpay-sim-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.nowpay-sim-top-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.nowpay-sim-badge {
+  background-color: #f59e0b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.nowpay-sim-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.nowpay-sim-order-id {
+  font-family: monospace;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.nowpay-sim-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 992px) {
+  .nowpay-sim-grid {
+    grid-template-columns: 2.3fr 1.2fr;
+  }
+}
+
+.nowpay-sim-widget {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.nowpay-sim-widget-header {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nowpay-sim-widget-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.nowpay-sim-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.nowpay-sim-tabs {
+  display: flex;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.nowpay-sim-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.nowpay-sim-tab-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.nowpay-sim-tab-btn.active {
+  border-bottom-color: #dc2626;
+  color: #dc2626;
+  background-color: #ffffff;
+}
+
+.nowpay-sim-body {
+  padding: 24px;
+}
+
+.nowpay-sim-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.nowpay-sim-currency-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 576px) {
+  .nowpay-sim-currency-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.nowpay-sim-currency-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background-color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.nowpay-sim-currency-btn:hover {
+  border-color: #cbd5e1;
+  background-color: #f8fafc;
+}
+
+.nowpay-sim-currency-btn.active {
+  border-color: #dc2626;
+  background-color: #f0fdf4;
+}
+
+.nowpay-sim-currency-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nowpay-sim-crypto-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.nowpay-sim-crypto-sym {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.nowpay-sim-crypto-name {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.nowpay-sim-crypto-right {
+  text-align: right;
+}
+
+.nowpay-sim-crypto-amount {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.nowpay-sim-crypto-rate {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.nowpay-sim-primary-btn {
+  width: 100%;
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nowpay-sim-primary-btn:hover {
+  background-color: #1aa041;
+  transform: translateY(-1px);
+}
+
+.nowpay-sim-amount-banner {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.nowpay-sim-amount-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nowpay-sim-amount-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.nowpay-sim-amount-val {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0f172a;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.nowpay-sim-amount-usd {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.nowpay-sim-change-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nowpay-sim-change-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.nowpay-sim-deposit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 576px) {
+  .nowpay-sim-deposit-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.nowpay-sim-qr-box {
+  border: 1px solid #e2e8f0;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.nowpay-sim-qr-box img {
+  border-radius: 4px;
+}
+
+.nowpay-sim-qr-label {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.nowpay-sim-address-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nowpay-sim-address-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.nowpay-sim-address-input-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 4px;
+}
+
+.nowpay-sim-address-text {
+  font-family: monospace;
+  font-size: 12px;
+  color: #334155;
+  padding: 8px;
+  word-break: break-all;
+  flex: 1;
+}
+
+.nowpay-sim-copy-button {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nowpay-sim-copy-button:hover {
+  background-color: #f8fafc;
+}
+
+.nowpay-sim-copy-button.copied {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.nowpay-sim-alert-info {
+  background-color: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  color: #0369a1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.nowpay-sim-pane {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 24px;
+}
+
+.nowpay-sim-status-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: #fafafa;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.nowpay-sim-status-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.nowpay-sim-status-icon.waiting {
+  background-color: #fef3c7;
+  color: #d97706;
+  animation: pulse 1.5s infinite;
+}
+
+.nowpay-sim-status-icon.success {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.nowpay-sim-status-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.nowpay-sim-status-desc {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.nowpay-sim-status-btn {
+  margin-top: 14px;
+  background-color: #f59e0b;
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nowpay-sim-status-btn:hover {
+  background-color: #d97706;
+}
+
+.nowpay-sim-progress-wrap {
+  width: 100%;
+  max-width: 240px;
+  background-color: #e2e8f0;
+  height: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.nowpay-sim-progress-bar {
+  background-color: #dc2626;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.nowpay-sim-sidebar-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.nowpay-sim-sidebar-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.nowpay-sim-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.nowpay-sim-row span:last-child {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.nowpay-sim-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.nowpay-sim-total-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.nowpay-sim-total-val {
+  font-size: 18px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.nowpay-sim-guarantee-card {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+  margin-top: 16px;
+}
+
+.nowpay-sim-guarantee-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nowpay-sim-back-link {
+  color: #dc2626;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  transition: all 0.2s ease;
+}
+
+.nowpay-sim-back-link:hover {
+  color: #1aa041;
+  text-decoration: underline;
+}
+
+/* ========================================================
+   DARK MODE ADAPTATIONS FOR SIMULATOR
+   ======================================================== */
+body.dark-mode .nowpay-sim-container {
+  background-color: #0b0c0e;
+  color: #cbd5e1;
+}
+
+body.dark-mode .nowpay-sim-top-banner {
+  border-bottom-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-title {
+  color: #f8fafc;
+}
+
+body.dark-mode .nowpay-sim-order-id {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-widget {
+  background-color: #16181d;
+  border-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-widget-header {
+  background-color: #1a1d24;
+  border-bottom-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-widget-status {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-tabs {
+  background-color: #111317;
+  border-bottom-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-tab-btn {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-tab-btn.active {
+  background-color: #16181d;
+  color: #dc2626;
+}
+
+body.dark-mode .nowpay-sim-body h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-currency-btn {
+  border-color: #2d333f;
+  background-color: #1a1d24;
+}
+
+body.dark-mode .nowpay-sim-currency-btn:hover {
+  border-color: #475569;
+  background-color: #1f232b;
+}
+
+body.dark-mode .nowpay-sim-currency-btn.active {
+  border-color: #dc2626;
+  background-color: #12281a;
+}
+
+body.dark-mode .nowpay-sim-crypto-sym {
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-crypto-name {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-crypto-amount {
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-amount-banner {
+  background-color: #121316;
+  border-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-amount-title {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-amount-val {
+  color: #f8fafc;
+}
+
+body.dark-mode .nowpay-sim-amount-usd {
+  color: #cbd5e1;
+}
+
+body.dark-mode .nowpay-sim-change-btn {
+  background-color: #1c2026;
+  border-color: #2d333f;
+  color: #cbd5e1;
+}
+
+body.dark-mode .nowpay-sim-change-btn:hover {
+  background-color: #272c36;
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-qr-box {
+  background-color: #1a1d24;
+  border-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-qr-box img {
+  filter: brightness(0.95);
+}
+
+body.dark-mode .nowpay-sim-address-label {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-address-input-bar {
+  background-color: #121316;
+  border-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-address-text {
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-copy-button {
+  background-color: #1c2026;
+  border-color: #2d333f;
+  color: #cbd5e1;
+}
+
+body.dark-mode .nowpay-sim-copy-button:hover {
+  background-color: #272c36;
+}
+
+body.dark-mode .nowpay-sim-copy-button.copied {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+body.dark-mode .nowpay-sim-alert-info {
+  background-color: #072235;
+  border-color: #0b3d5c;
+  color: #38bdf8;
+}
+
+body.dark-mode .nowpay-sim-pane {
+  border-top-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-status-box {
+  background-color: #1a1d24;
+  border-color: #383e4c;
+}
+
+body.dark-mode .nowpay-sim-status-box .nowpay-sim-status-icon.waiting {
+  background-color: #3c2401;
+  color: #f59e0b;
+}
+
+body.dark-mode .nowpay-sim-status-box .nowpay-sim-status-icon.success {
+  background-color: #0d3822;
+  color: #34d399;
+}
+
+body.dark-mode .nowpay-sim-status-title {
+  color: #f8fafc;
+}
+
+body.dark-mode .nowpay-sim-status-desc {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-progress-wrap {
+  background-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-sidebar-card {
+  background-color: #16181d;
+  border-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-sidebar-card h3 {
+  color: #f8fafc;
+  border-bottom-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-row {
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-row span:last-child {
+  color: #f1f5f9;
+}
+
+body.dark-mode .nowpay-sim-total-row {
+  border-top-color: #2d333f;
+}
+
+body.dark-mode .nowpay-sim-total-label {
+  color: #f8fafc;
+}
+
+body.dark-mode .nowpay-sim-total-val {
+  color: #ffffff;
+}
+
+body.dark-mode .nowpay-sim-guarantee-card {
+  background-color: #1a1d24;
+  border-color: #2d333f;
+  color: #94a3b8;
+}
+
+body.dark-mode .nowpay-sim-guarantee-title {
+  color: #f1f5f9;
+}
+
+/* ========================================================
+   STICKY PRICE / BUY NOW MOBILE BAR
+   ======================================================== */
+.digital-sticky-mobile-bar {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .digital-sticky-mobile-bar {
+    display: flex !important;
+  }
+}
+

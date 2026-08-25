@@ -1,0 +1,6 @@
+{
+  "name": "GTA Vice City Mods",
+  "description": "GTA mods repository and community hub featuring vehicles, paint jobs, scripts, tools, and player mods.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "MOD-54",
+    "title": "gta vice 3d map",
+    "slug": "gta-vice-3d-map",
+    "category": "Scripts",
+    "price": 50,
+    "author": "GtaModderPro",
+    "downloads": 0,
+    "rating": 5,
+    "status": "active",
+    "fileSize": "144 KB",
+    "version": "1.0.0",
+    "coverImage": "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654144807-gemini-watermark-removed.jpg",
+    "zipUrl": "blob:http://localhost:3000/866aac40-961b-4ae7-8329-1885a269ce6b",
+    "thumbnailImages": [
+      "blob:http://localhost:3000/9c6ef4de-1337-494a-bd1f-ba678414cadb",
+      "blob:http://localhost:3000/fa9a64a0-58c3-42c6-bc86-75ef96b99997",
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654172910-cabin.jpg",
+      "https://youtu.be/y2tEPmwWEiI?si=9ZvEBz7Cb3h5aA1F"
+    ],
+    "videoUrl": "https://youtu.be/oOkqsq-uQ70?si=forF4YVfmTSeOMyr",
+    "createdDate": "2026-08-25"
+  },
+  {
+    "id": "MOD-204",
+    "title": "dear fan",
+    "slug": "dear-fan",
+    "category": "Weapons",
+    "price": 53,
+    "author": "GtaModderPro",
+    "downloads": 0,
+    "rating": 5,
+    "status": "active",
+    "fileSize": "1 KB",
+    "version": "1.0.0",
+    "coverImage": "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654472841-images-1-.jpg",
+    "zipUrl": "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/mods/1787654520839-logo.png.png",
+    "thumbnailImages": [
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654472841-images-1-.jpg",
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654492872-nivya-120x120.png",
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654493182-protein-suplients-120x120.png",
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654493189-screenshot.png",
+      "https://pub-cef0bc380fd14bb49dcf1c127f385768.r2.dev/images/1787654493183-images.jpg",
+      "https://youtu.be/y2tEPmwWEiI?si=9ZvEBz7Cb3h5aA1F"
+    ],
+    "videoUrl": "https://youtu.be/euCqAq6BRa4?si=jLP5yfobDaZ_UB5E",
+    "description": "High quality GTA 5 custom mod.",
+    "createdDate": "2026-08-25"
+  }
+]
