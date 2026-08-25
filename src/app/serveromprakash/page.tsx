@@ -8,7 +8,7 @@ export default function ServeromprakashLoginPage() {
   const router = useRouter();
 
   const handleLoginSuccess = () => {
-    router.push('/admin');
+    router.push('/vpsomprakash');
   };
 
   return <AdminLogin onLoginSuccess={handleLoginSuccess} />;
