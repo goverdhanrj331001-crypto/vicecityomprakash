@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     if (!keyId || !keySecret || keySecret.includes('••••')) {
       return NextResponse.json(
-        { error: 'Razorpay Key ID and Key Secret are not configured in Admin Settings. Please configure them in Payment Gateways.' },
+        { error: 'Payment service is temporarily unavailable. Please try again later or contact support.' },
         { status: 400 }
       );
     }
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     if (!razorpayRes.ok) {
       console.error('Razorpay API error response:', razorpayOrder);
       return NextResponse.json(
-        { error: razorpayOrder.error?.description || 'Failed to create Razorpay order. Check your Razorpay Key ID & Secret.' },
+        { error: 'Payment gateway is temporarily unavailable. Please try again shortly.' },
         { status: razorpayRes.status }
       );
     }

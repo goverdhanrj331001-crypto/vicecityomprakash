@@ -15,6 +15,12 @@ export function PaymentsTab({
   const [config, setConfig] = useState<PaymentGatewaysConfig>(paymentConfig);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  React.useEffect(() => {
+    if (paymentConfig) {
+      setConfig(paymentConfig);
+    }
+  }, [paymentConfig]);
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     onSavePaymentConfig(config);
@@ -107,19 +113,36 @@ export function PaymentsTab({
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" style={{ height: 20 }} />
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Razorpay Payment Gateway</h3>
               </div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={config.razorpay.enabled}
-                  onChange={(e) =>
-                    setConfig({ ...config, razorpay: { ...config.razorpay, enabled: e.target.checked } })
-                  }
-                  style={{ width: 16, height: 16, accentColor: '#1a1749' }}
+              <button
+                type="button"
+                onClick={() =>
+                  setConfig({ ...config, razorpay: { ...config.razorpay, enabled: !config.razorpay.enabled } })
+                }
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 14px',
+                  borderRadius: 20,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: config.razorpay.enabled ? '#16a34a' : '#e2e8f0',
+                  color: config.razorpay.enabled ? '#ffffff' : '#64748b',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: config.razorpay.enabled ? '#ffffff' : '#94a3b8',
+                  }}
                 />
-                <span style={{ color: config.razorpay.enabled ? '#0a0a0a' : '#94a3b8' }}>
-                  {config.razorpay.enabled ? 'Enabled' : 'Disabled'}
-                </span>
-              </label>
+                <span>{config.razorpay.enabled ? 'ENABLED' : 'DISABLED'}</span>
+              </button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -172,19 +195,36 @@ export function PaymentsTab({
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg" alt="Binance" style={{ height: 20 }} />
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Binance Pay (Crypto USDT)</h3>
               </div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={config.binance.enabled}
-                  onChange={(e) =>
-                    setConfig({ ...config, binance: { ...config.binance, enabled: e.target.checked } })
-                  }
-                  style={{ width: 16, height: 16, accentColor: '#1a1749' }}
+              <button
+                type="button"
+                onClick={() =>
+                  setConfig({ ...config, binance: { ...config.binance, enabled: !config.binance.enabled } })
+                }
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 14px',
+                  borderRadius: 20,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: config.binance.enabled ? '#16a34a' : '#e2e8f0',
+                  color: config.binance.enabled ? '#ffffff' : '#64748b',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: config.binance.enabled ? '#ffffff' : '#94a3b8',
+                  }}
                 />
-                <span style={{ color: config.binance.enabled ? '#0a0a0a' : '#94a3b8' }}>
-                  {config.binance.enabled ? 'Enabled' : 'Disabled'}
-                </span>
-              </label>
+                <span>{config.binance.enabled ? 'ENABLED' : 'DISABLED'}</span>
+              </button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

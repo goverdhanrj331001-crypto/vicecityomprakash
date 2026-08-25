@@ -174,7 +174,7 @@ function CheckoutContent() {
   const [discountAmount, setDiscountAmount] = useState(0);
 
   // Enabled payment methods from database config
-  const [enabledGateways, setEnabledGateways] = useState<('razorpay' | 'binance' | 'nowpayments')[]>(['razorpay', 'binance']);
+  const [enabledGateways, setEnabledGateways] = useState<('razorpay' | 'binance' | 'nowpayments')[]>([]);
 
   React.useEffect(() => {
     fetch('/api/payments?public=true')
@@ -186,8 +186,8 @@ function CheckoutContent() {
           if (data.config.binance?.enabled) active.push('binance');
           if (data.config.nowpayments?.enabled) active.push('nowpayments');
           
+          setEnabledGateways(active);
           if (active.length > 0) {
-            setEnabledGateways(active);
             setPaymentMethod(active[0]);
           }
         }
@@ -237,6 +237,61 @@ function CheckoutContent() {
     const generatedOrderId = 'GTA5-' + Math.floor(100000 + Math.random() * 900000);
     setOrderId(generatedOrderId);
 
+    // 0. IF NO PAYMENT GATEWAYS ARE ENABLED: DIRECT INSTANT FREE ACCESS
+    if (enabledGateways.length === 0) {
+      const directOrderObj = {
+        id: generatedOrderId,
+        customerName: name,
+        customerMobile: mobile,
+        modTitle: title,
+        modCover: coverImage,
+        amountUsd: '0.00',
+        amountInr: 0,
+        paymentMethod: 'FREE_DOWNLOAD',
+        status: 'completed',
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        zipUrl: resolvedZipUrl,
+        fileSize: resolvedFileSize,
+        version: version,
+        author: author,
+      };
+
+      try {
+        const existing = JSON.parse(localStorage.getItem('user_orders') || '[]');
+        const updated = [directOrderObj, ...existing];
+        localStorage.setItem('user_orders', JSON.stringify(updated));
+
+        try {
+          document.cookie = `user_orders=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch (cookieErr) {}
+
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: generatedOrderId,
+            customerName: name,
+            customerMobile: mobile,
+            country: country,
+            countryFlag: selectedCountryObj?.flagUrl,
+            modTitle: title,
+            modSlug: slug,
+            amountUsd: 0,
+            amountInr: 0,
+            paymentMethod: 'free',
+            status: 'completed',
+            gatewayTxnId: 'FREE_DIRECT_DOWNLOAD',
+          }),
+        }).catch(() => {});
+      } catch (err) {
+        console.error(err);
+      }
+
+      setIsSuccess(true);
+      window.location.href = `/orders?success=true&orderId=${generatedOrderId}`;
+      return;
+    }
+
     // 1. REAL RAZORPAY PAYMENT FLOW
     if (paymentMethod === 'razorpay') {
       try {
@@ -258,7 +313,7 @@ function CheckoutContent() {
 
         if (!res.ok || !data.success || !data.orderId) {
           setIsProcessing(false);
-          setErrorMsg(data.error || 'Razorpay order creation failed. Please check your credentials in Admin Settings.');
+          setErrorMsg(data.error || 'Payment service is temporarily unavailable. Please try again shortly.');
           return;
         }
 
@@ -1433,101 +1488,101 @@ function CheckoutContent() {
                       </div>
                     </div>
 
-                    {/* STEP 2: SELECT PAYMENT METHOD */}
+                    {/* STEP 2: SELECT PAYMENT METHOD OR DIRECT DOWNLOAD */}
                     <div className="co-sec-divider">
                       <span className="co-sec-num">2</span>
-                      <h3 className="co-sec-title">Select Payment Method</h3>
+                      <h3 className="co-sec-title">
+                        {enabledGateways.length === 0 ? 'Delivery Method' : 'Select Payment Method'}
+                      </h3>
                     </div>
 
-                    <div className="co-pm-grid">
-                      {enabledGateways.map((gw) => {
-                        const info = PAYMENT_DETAILS[gw] || PAYMENT_DETAILS.razorpay;
-                        if (!info) return null;
-                        const active = paymentMethod === gw;
-                        const PMIcon = info.icon;
-                        
-                        return (
-                          <div
-                            key={gw}
-                            onClick={() => setPaymentMethod(gw)}
-                            className={`co-pm-card ${active ? 'active' : ''}`}
-                          >
-                            <div className="co-pm-icon">
-                              <PMIcon size={20} />
-                            </div>
-                            <div>
-                              <h4 className="co-pm-title">
-                                {info.title}
-                                {active && (
-                                  <span style={{
-                                    width: 16,
-                                    height: 16,
-                                    borderRadius: '50%',
-                                    backgroundColor: '#dc2626',
-                                    color: '#ffffff',
-                                    fontSize: '10px',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginLeft: 6
-                                  }}>✓</span>
-                                )}
-                              </h4>
-                              <div className="co-pm-desc">{info.subtitle}</div>
-                            </div>
-                            <PaymentLogoImage
-                              src={info.logo}
-                              fallbackSrc={info.fallback}
-                              alt={info.title}
-                              className="co-pm-logo"
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {paymentMethod === 'nowpayments' && (
+                    {enabledGateways.length === 0 ? (
                       <div style={{
-                        marginTop: '16px',
-                        padding: '16px',
-                        backgroundColor: '#fffbeb',
-                        border: '1px solid #fcd34d',
-                        borderRadius: '8px',
-                        color: '#b45309',
-                        fontSize: '13px',
-                        lineHeight: '1.5'
+                        padding: '16px 20px',
+                        backgroundColor: '#f0fdf4',
+                        border: '1px solid #bbf7d0',
+                        borderRadius: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        color: '#166534',
+                        marginBottom: '20px'
                       }}>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', fontWeight: 'bold', marginBottom: '6px' }}>
-                          <AlertCircle size={16} />
-                          <span>Important Notice / महत्वपूर्ण सूचना ⚠️</span>
+                        <ShieldCheck size={24} style={{ color: '#16a34a', flexShrink: 0 }} />
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '14px' }}>Instant Direct Download Available</div>
+                          <div style={{ fontSize: '12px', color: '#15803d' }}>No payment required. Fill in your details above and click below for your instant download file.</div>
                         </div>
-                        <p style={{ margin: '0 0 8px 0' }}>
-                          Because this item is under $5.00, high-fee networks like <strong>Bitcoin (BTC)</strong> or <strong>Ethereum (ETH)</strong> may fail on the checkout page with the error <em>&quot;Crypto amount is less than minimal&quot;</em>.
-                        </p>
-                        <p style={{ margin: '0 0 8px 0', fontSize: '12.5px', borderTop: '1px dashed #fcd34d', paddingTop: '8px' }}>
-                          चूँकि इस आइटम की कीमत $5.00 से कम है, इसलिए <strong>Bitcoin (BTC)</strong> या <strong>Ethereum (ETH)</strong> जैसी अधिक फ़ीस वाली क्रिप्टोकरेंसी पर <em>&quot;Crypto amount is less than minimal&quot;</em> की एरर आ सकती है।
-                        </p>
-                        <p style={{ margin: 0, fontWeight: 500 }}>
-                          💡 <strong>Solution (समाधान):</strong> On the payment page, please choose a low-fee coin like <strong>Litecoin (LTC)</strong>, <strong>Tron (TRX)</strong>, <strong>Dogecoin (DOGE)</strong>, or <strong>USDT</strong>. They have a minimum payment limit of less than $2.00 and will work perfectly!
-                          <br />
-                          <span style={{ fontSize: '11.5px', opacity: 0.9 }}>
-                            (पेमेंट पेज पर कृपया <strong>Litecoin (LTC)</strong>, <strong>Tron (TRX)</strong>, या <strong>USDT</strong> चुनें, इनका मिनिमम लिमिट $2 से कम है और ये तुरंत काम करेंगे!)
-                          </span>
-                        </p>
+                      </div>
+                    ) : (
+                      <div className="co-pm-grid">
+                        {enabledGateways.map((gw) => {
+                          const info = PAYMENT_DETAILS[gw] || PAYMENT_DETAILS.razorpay;
+                          if (!info) return null;
+                          const active = paymentMethod === gw;
+                          const PMIcon = info.icon;
+                          
+                          return (
+                            <div
+                              key={gw}
+                              onClick={() => setPaymentMethod(gw)}
+                              className={`co-pm-card ${active ? 'active' : ''}`}
+                            >
+                              <div className="co-pm-icon">
+                                <PMIcon size={20} />
+                              </div>
+                              <div>
+                                <h4 className="co-pm-title">
+                                  {info.title}
+                                  {active && (
+                                    <span style={{
+                                      width: 16,
+                                      height: 16,
+                                      borderRadius: '50%',
+                                      backgroundColor: '#dc2626',
+                                      color: '#ffffff',
+                                      fontSize: '10px',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      marginLeft: 6
+                                    }}>✓</span>
+                                  )}
+                                </h4>
+                                <div className="co-pm-desc">{info.subtitle}</div>
+                              </div>
+                              <PaymentLogoImage
+                                src={info.logo}
+                                fallbackSrc={info.fallback}
+                                alt={info.title}
+                                className="co-pm-logo"
+                              />
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
 
-                    {/* Pay Button */}
+                    {/* Pay / Download Button */}
                     <button type="submit" disabled={isProcessing} className="co-pay-btn">
                       {isProcessing ? (
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <Loader2 size={18} className="fa-spin" />
-                          <span>Processing secure transaction...</span>
+                          <span>{enabledGateways.length === 0 ? 'Preparing download link...' : 'Processing secure transaction...'}</span>
                         </div>
                       ) : (
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', width: '100%' }}>
-                          <Lock size={16} />
-                          <span>Pay ${finalPrice}</span>
+                          {enabledGateways.length === 0 ? (
+                            <>
+                              <Zap size={18} />
+                              <span>Get Instant Download Now</span>
+                            </>
+                          ) : (
+                            <>
+                              <Lock size={16} />
+                              <span>Pay ${finalPrice}</span>
+                            </>
+                          )}
                         </div>
                       )}
                     </button>

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     if (!apiKey || !secretKey || secretKey.includes('••••')) {
       return NextResponse.json(
-        { error: 'Binance Pay API Key & Secret Key are not configured in Admin Settings. Please configure them in Payment Gateways.' },
+        { error: 'Crypto payment service is temporarily unavailable. Please try another payment method.' },
         { status: 400 }
       );
     }
