@@ -60,26 +60,12 @@ function PaymentLogoImage({ src, fallbackSrc, alt, className, style }: { src: st
 }
 
 const PAYMENT_DETAILS = {
-  upi: {
-    title: 'UPI / QR',
-    subtitle: 'GPay, PhonePe, Paytm',
-    icon: QrCode,
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg',
-    fallback: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg'
-  },
   razorpay: {
     title: 'Razorpay',
     subtitle: 'Cards, UPI, NetBanking',
     icon: CreditCard,
     logo: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg',
     fallback: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg'
-  },
-  paypal: {
-    title: 'PayPal',
-    subtitle: 'International Cards',
-    icon: Wallet,
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg',
-    fallback: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg'
   },
   binance: {
     title: 'Binance Pay',
@@ -107,6 +93,19 @@ function CheckoutContent() {
 
   // Dynamic state for database mod details
   const [dbMod, setDbMod] = useState<Mod | null>(null);
+
+  // Load Razorpay Checkout SDK Script
+  React.useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      try {
+        document.body.removeChild(script);
+      } catch (e) {}
+    };
+  }, []);
 
   React.useEffect(() => {
     let active = true;
@@ -169,23 +168,21 @@ function CheckoutContent() {
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
   const [country, setCountry] = useState('India');
-  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'razorpay' | 'paypal' | 'binance' | 'nowpayments'>('upi');
+  const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'binance' | 'nowpayments'>('razorpay');
   const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
 
   // Enabled payment methods from database config
-  const [enabledGateways, setEnabledGateways] = useState<('upi' | 'razorpay' | 'paypal' | 'binance' | 'nowpayments')[]>(['upi', 'razorpay', 'paypal', 'binance', 'nowpayments']);
+  const [enabledGateways, setEnabledGateways] = useState<('razorpay' | 'binance' | 'nowpayments')[]>(['razorpay', 'binance']);
 
   React.useEffect(() => {
     fetch('/api/payments?public=true')
       .then((res) => res.json())
       .then((data) => {
         if (data && data.config) {
-          const active: ('upi' | 'razorpay' | 'paypal' | 'binance' | 'nowpayments')[] = [];
-          if (data.config.upi?.enabled) active.push('upi');
+          const active: ('razorpay' | 'binance' | 'nowpayments')[] = [];
           if (data.config.razorpay?.enabled) active.push('razorpay');
-          if (data.config.paypal?.enabled) active.push('paypal');
           if (data.config.binance?.enabled) active.push('binance');
           if (data.config.nowpayments?.enabled) active.push('nowpayments');
           
@@ -223,7 +220,7 @@ function CheckoutContent() {
     }
   };
 
-  const handleCompleteOrder = (e: React.FormEvent) => {
+  const handleCompleteOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
 
@@ -240,6 +237,186 @@ function CheckoutContent() {
     const generatedOrderId = 'GTA5-' + Math.floor(100000 + Math.random() * 900000);
     setOrderId(generatedOrderId);
 
+    // 1. REAL RAZORPAY PAYMENT FLOW
+    if (paymentMethod === 'razorpay') {
+      try {
+        const res = await fetch('/api/payments/razorpay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: generatedOrderId,
+            amountInInr: Math.round(parseFloat(finalPrice) * 83),
+            amountUsd: parseFloat(finalPrice),
+            title: title,
+            customerName: name,
+            customerMobile: mobile,
+            customerEmail: `${mobile.replace(/[^0-9]/g, '')}@customer.gtamods.com`,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success || !data.orderId) {
+          setIsProcessing(false);
+          setErrorMsg(data.error || 'Razorpay order creation failed. Please check your credentials in Admin Settings.');
+          return;
+        }
+
+        // Open Razorpay Checkout Popup
+        const options = {
+          key: data.keyId,
+          amount: data.amount,
+          currency: data.currency || 'INR',
+          name: 'G5mode',
+          description: title,
+          image: coverImage,
+          order_id: data.orderId,
+          prefill: {
+            name: name,
+            contact: mobile,
+            email: `${mobile.replace(/[^0-9]/g, '')}@customer.gtamods.com`,
+          },
+          theme: {
+            color: '#1a1749',
+          },
+          modal: {
+            ondismiss: function () {
+              setIsProcessing(false);
+            },
+          },
+          handler: function (response: any) {
+            setIsProcessing(true);
+            const rzpPaymentId = response.razorpay_payment_id || `PAY_${Date.now()}`;
+
+            // Save completed order locally
+            const completedOrderObj = {
+              id: generatedOrderId,
+              customerName: name,
+              customerMobile: mobile,
+              modTitle: title,
+              modCover: coverImage,
+              amountUsd: finalPrice,
+              amountInr: Math.round(parseFloat(finalPrice) * 83),
+              paymentMethod: 'RAZORPAY',
+              status: 'completed',
+              date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+              zipUrl: resolvedZipUrl,
+              fileSize: resolvedFileSize,
+              version: version,
+              author: author,
+            };
+
+            try {
+              const existing = JSON.parse(localStorage.getItem('user_orders') || '[]');
+              const updated = [completedOrderObj, ...existing];
+              localStorage.setItem('user_orders', JSON.stringify(updated));
+
+              try {
+                document.cookie = `user_orders=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000; SameSite=Lax`;
+              } catch (cookieErr) {}
+
+              // Asynchronous cloud sync to Supabase
+              fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  orderId: generatedOrderId,
+                  customerName: name,
+                  customerMobile: mobile,
+                  country: country,
+                  countryFlag: selectedCountryObj?.flagUrl,
+                  modTitle: title,
+                  modSlug: slug,
+                  amountUsd: parseFloat(finalPrice),
+                  amountInr: Math.round(parseFloat(finalPrice) * 83),
+                  paymentMethod: 'razorpay',
+                  status: 'completed',
+                  gatewayTxnId: rzpPaymentId,
+                }),
+              }).catch(() => {});
+            } catch (err) {
+              console.error(err);
+            }
+
+            setIsSuccess(true);
+            window.location.href = `/orders?success=true&orderId=${generatedOrderId}`;
+          },
+        };
+
+        if (typeof (window as any).Razorpay !== 'undefined') {
+          const rzp = new (window as any).Razorpay(options);
+          rzp.on('payment.failed', function (resp: any) {
+            setIsProcessing(false);
+            setErrorMsg(resp.error?.description || 'Payment was unsuccessful. Please try again.');
+          });
+          rzp.open();
+        } else {
+          setIsProcessing(false);
+          setErrorMsg('Razorpay payment gateway script could not load. Please check your network connection.');
+        }
+      } catch (err: any) {
+        setIsProcessing(false);
+        setErrorMsg(err.message || 'Error occurred while contacting Razorpay.');
+      }
+      return;
+    }
+
+    // 2. REAL BINANCE PAY FLOW
+    if (paymentMethod === 'binance') {
+      try {
+        const binanceRes = await fetch('/api/payments/binance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: generatedOrderId,
+            amount: parseFloat(finalPrice),
+            title: title,
+            customerName: name,
+            customerMobile: mobile,
+          }),
+        });
+
+        const binanceData = await binanceRes.json();
+
+        if (binanceRes.ok && binanceData.success && binanceData.checkoutUrl) {
+          const draftOrderObj = {
+            id: generatedOrderId,
+            customerName: name,
+            customerMobile: mobile,
+            modTitle: title,
+            modCover: coverImage,
+            amountUsd: finalPrice,
+            amountInr: Math.round(parseFloat(finalPrice) * 83),
+            paymentMethod: 'BINANCE',
+            status: 'completed',
+            date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            zipUrl: resolvedZipUrl,
+            fileSize: resolvedFileSize,
+            version: version,
+            author: author,
+          };
+
+          try {
+            const drafts = JSON.parse(localStorage.getItem('pending_order_drafts') || '[]');
+            drafts.push(draftOrderObj);
+            localStorage.setItem('pending_order_drafts', JSON.stringify(drafts));
+          } catch (err) {}
+
+          window.location.href = binanceData.checkoutUrl;
+          return;
+        } else {
+          setIsProcessing(false);
+          setErrorMsg(binanceData.error || 'Binance Pay could not initialize. Please check your Binance Merchant credentials in Admin Settings.');
+          return;
+        }
+      } catch (err: any) {
+        setIsProcessing(false);
+        setErrorMsg('Error connecting to Binance Pay.');
+        return;
+      }
+    }
+
+    // 3. REAL NOWPAYMENTS CRYPTO FLOW
     if (paymentMethod === 'nowpayments') {
       fetch('/api/payments/nowpayments', {
         method: 'POST',
@@ -248,7 +425,7 @@ function CheckoutContent() {
           orderId: generatedOrderId,
           amount: parseFloat(finalPrice),
           title: title,
-          customerEmail: `${mobile}@customer.gtamods.com`,
+          customerEmail: `${mobile.replace(/[^0-9]/g, '')}@customer.gtamods.com`,
           customerName: name,
         }),
       })
@@ -256,7 +433,6 @@ function CheckoutContent() {
         .then((data) => {
           setIsProcessing(false);
           if (data && data.invoiceUrl) {
-            // Save order details as a temporary draft in localStorage
             const draftOrderObj = {
               id: generatedOrderId,
               customerName: name,
@@ -266,7 +442,7 @@ function CheckoutContent() {
               amountUsd: finalPrice,
               amountInr: Math.round(parseFloat(finalPrice) * 83),
               paymentMethod: 'NOWPAYMENTS',
-              status: 'completed', // Marked completed when restored upon success redirect
+              status: 'completed',
               date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
               zipUrl: resolvedZipUrl,
               fileSize: resolvedFileSize,
@@ -278,83 +454,22 @@ function CheckoutContent() {
               const drafts = JSON.parse(localStorage.getItem('pending_order_drafts') || '[]');
               drafts.push(draftOrderObj);
               localStorage.setItem('pending_order_drafts', JSON.stringify(drafts));
-            } catch (err) {
-              console.error('Error saving order draft:', err);
-            }
+            } catch (err) {}
 
-            // Redirect to NOWPayments billing invoice
             window.location.href = data.invoiceUrl;
           } else {
             setErrorMsg(data.error || 'NOWPayments could not initiate payment. Try again.');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setIsProcessing(false);
           setErrorMsg('An error occurred while connecting to NOWPayments. Please try again.');
         });
       return;
     }
 
-    setTimeout(() => {
-      setIsProcessing(false);
-
-      // Save order to localStorage for My Orders screen
-      const newOrderObj = {
-        id: generatedOrderId,
-        customerName: name,
-        customerMobile: mobile,
-        modTitle: title,
-        modCover: coverImage,
-        amountUsd: finalPrice,
-        amountInr: Math.round(parseFloat(finalPrice) * 83),
-        paymentMethod: paymentMethod.toUpperCase(),
-        status: 'completed',
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-        zipUrl: resolvedZipUrl,
-        fileSize: resolvedFileSize,
-        version: version,
-        author: author,
-      };
-
-      try {
-        const existing = JSON.parse(localStorage.getItem('user_orders') || '[]');
-        const updated = [newOrderObj, ...existing];
-        localStorage.setItem('user_orders', JSON.stringify(updated));
-
-        // Save also in cookies for redundancy
-        try {
-          const cookieName = 'user_orders';
-          document.cookie = `${cookieName}=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000; SameSite=Lax`;
-        } catch (cookieErr) {
-          console.error('Error storing in cookies:', cookieErr);
-        }
-
-        // Asynchronous cloud sync to Supabase database for admin overview
-        fetch('/api/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            orderId: generatedOrderId,
-            customerName: name,
-            customerMobile: mobile,
-            country: country,
-            countryFlag: selectedCountryObj?.flagUrl,
-            modTitle: title,
-            modSlug: slug,
-            amountUsd: parseFloat(finalPrice),
-            amountInr: Math.round(parseFloat(finalPrice) * 83),
-            paymentMethod: paymentMethod.toLowerCase(),
-            status: 'completed',
-            gatewayTxnId: `TXN_${paymentMethod.toUpperCase()}_${Date.now()}`,
-          }),
-        }).catch(() => {});
-      } catch (err) {
-        console.error(err);
-      }
-
-      setIsSuccess(true);
-      window.location.href = `/orders?success=true&orderId=${generatedOrderId}`;
-    }, 1200);
+    setIsProcessing(false);
+    setErrorMsg('Please select a valid payment method.');
   };
 
   return (
@@ -1326,7 +1441,8 @@ function CheckoutContent() {
 
                     <div className="co-pm-grid">
                       {enabledGateways.map((gw) => {
-                        const info = PAYMENT_DETAILS[gw] || PAYMENT_DETAILS.upi;
+                        const info = PAYMENT_DETAILS[gw] || PAYMENT_DETAILS.razorpay;
+                        if (!info) return null;
                         const active = paymentMethod === gw;
                         const PMIcon = info.icon;
                         

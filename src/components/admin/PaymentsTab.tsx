@@ -44,7 +44,7 @@ export function PaymentsTab({
             Payment Gateway Settings &amp; API Keys
           </h2>
           <p style={{ fontSize: 12, color: '#64748b', margin: 0 }}>
-            Configure merchant UPI VPA, Razorpay credentials, and Binance USDT settings
+            Configure active merchant credentials for Razorpay (Cards/UPI/NetBanking) and Binance Pay (Crypto USDT)
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export function PaymentsTab({
 
       {/* GATEWAYS CARDS */}
       <div className="row" style={{ margin: 0 }}>
-        {/* 1. UPI / QR GATEWAY */}
+        {/* 1. RAZORPAY GATEWAY */}
         <div className="col-md-6" style={{ padding: '0 8px 16px' }}>
           <div
             style={{
@@ -104,84 +104,7 @@ export function PaymentsTab({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, borderBottom: '1px solid #f1f5f9', paddingBottom: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <img src="https://thesvg.org/icons/upi/default.svg" alt="UPI" style={{ height: 24 }} />
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a' }}>UPI / QR Code (India)</h3>
-              </div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={config.upi.enabled}
-                  onChange={(e) =>
-                    setConfig({ ...config, upi: { ...config.upi, enabled: e.target.checked } })
-                  }
-                  style={{ width: 16, height: 16, accentColor: '#1a1749' }}
-                />
-                <span style={{ color: config.upi.enabled ? '#0a0a0a' : '#94a3b8' }}>
-                  {config.upi.enabled ? 'Enabled' : 'Disabled'}
-                </span>
-              </label>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 4 }}>
-                  Merchant UPI VPA ID (e.g. 5mods@upi / Paytm)
-                </label>
-                <input
-                  type="text"
-                  value={config.upi.vpaId}
-                  onChange={(e) =>
-                    setConfig({ ...config, upi: { ...config.upi, vpaId: e.target.value } })
-                  }
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 4 }}>
-                  Merchant Display Name
-                </label>
-                <input
-                  type="text"
-                  value={config.upi.merchantName}
-                  onChange={(e) =>
-                    setConfig({ ...config, upi: { ...config.upi, merchantName: e.target.value } })
-                  }
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
-                />
-              </div>
-
-              <div style={{ backgroundColor: '#f8fafc', padding: 12, borderRadius: 8, border: '1px solid #e2e8f0' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 600, color: '#1e293b', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={config.upi.autoVerifySms}
-                    onChange={(e) =>
-                      setConfig({ ...config, upi: { ...config.upi, autoVerifySms: e.target.checked } })
-                    }
-                    style={{ accentColor: '#1a1749' }}
-                  />
-                  <span>Enable Instant SMS Bank Verification for UPI</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 2. RAZORPAY GATEWAY */}
-        <div className="col-md-6" style={{ padding: '0 8px 16px' }}>
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              borderRadius: 12,
-              padding: 20,
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, borderBottom: '1px solid #f1f5f9', paddingBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <img src="https://thesvg.org/icons/razorpay/default.svg" alt="Razorpay" style={{ height: 22 }} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" style={{ height: 20 }} />
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Razorpay Payment Gateway</h3>
               </div>
               <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
@@ -206,6 +129,7 @@ export function PaymentsTab({
                 </label>
                 <input
                   type="text"
+                  placeholder="rzp_live_..."
                   value={config.razorpay.keyId}
                   onChange={(e) =>
                     setConfig({ ...config, razorpay: { ...config.razorpay, keyId: e.target.value } })
@@ -220,6 +144,7 @@ export function PaymentsTab({
                 </label>
                 <input
                   type="password"
+                  placeholder="Enter Key Secret"
                   value={config.razorpay.keySecret}
                   onChange={(e) =>
                     setConfig({ ...config, razorpay: { ...config.razorpay, keySecret: e.target.value } })
@@ -231,7 +156,7 @@ export function PaymentsTab({
           </div>
         </div>
 
-        {/* 3. BINANCE PAY GATEWAY */}
+        {/* 2. BINANCE PAY GATEWAY */}
         <div className="col-md-6" style={{ padding: '0 8px 16px' }}>
           <div
             style={{
@@ -244,7 +169,7 @@ export function PaymentsTab({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, borderBottom: '1px solid #f1f5f9', paddingBottom: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <img src="https://thesvg.org/icons/binance/default.svg" alt="Binance" style={{ height: 22 }} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg" alt="Binance" style={{ height: 20 }} />
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Binance Pay (Crypto USDT)</h3>
               </div>
               <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
@@ -269,6 +194,7 @@ export function PaymentsTab({
                 </label>
                 <input
                   type="text"
+                  placeholder="Merchant ID"
                   value={config.binance.merchantId}
                   onChange={(e) =>
                     setConfig({ ...config, binance: { ...config.binance, merchantId: e.target.value } })
@@ -283,9 +209,25 @@ export function PaymentsTab({
                 </label>
                 <input
                   type="text"
+                  placeholder="API Key"
                   value={config.binance.apiKey}
                   onChange={(e) =>
                     setConfig({ ...config, binance: { ...config.binance, apiKey: e.target.value } })
+                  }
+                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 4 }}>
+                  Binance Pay Secret Key
+                </label>
+                <input
+                  type="password"
+                  placeholder="Secret Key"
+                  value={config.binance.secretKey}
+                  onChange={(e) =>
+                    setConfig({ ...config, binance: { ...config.binance, secretKey: e.target.value } })
                   }
                   style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13 }}
                 />
