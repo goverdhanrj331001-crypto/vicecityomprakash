@@ -206,13 +206,8 @@ export function AdminTopbar({
                 System Activity
               </div>
               <div style={{ maxHeight: 200, overflowY: 'auto' }}>
-                <div style={{ padding: '10px 16px', borderBottom: `1px solid ${borderColor}`, fontSize: 12 }}>
-                  <div style={{ fontWeight: 600, color: textColor }}>New Order #ORD-9842</div>
-                  <div style={{ color: subTextColor, fontSize: 11 }}>₹415 paid via UPI</div>
-                </div>
-                <div style={{ padding: '10px 16px', fontSize: 12 }}>
-                  <div style={{ fontWeight: 600, color: textColor }}>Product Updated</div>
-                  <div style={{ color: subTextColor, fontSize: 11 }}>Bugatti Chiron pricing modified</div>
+                <div style={{ padding: '24px 16px', textAlign: 'center', fontSize: 12, color: subTextColor }}>
+                  No recent activity
                 </div>
               </div>
             </div>

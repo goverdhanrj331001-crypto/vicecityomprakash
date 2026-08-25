@@ -238,7 +238,7 @@ export function OrdersTab({
                     </td>
                     <td style={{ padding: '12px', fontSize: 12, color: '#64748b' }}>{ord.date}</td>
                     <td style={{ padding: '12px', fontWeight: 700, color: '#0f172a' }}>
-                      ${ord.amountUsd} <span style={{ fontSize: 11, color: '#64748b', fontWeight: 400 }}>(₹{ord.amountInr})</span>
+                      ${Number(ord.amountUsd).toFixed(2)}
                     </td>
                     <td style={{ padding: '12px' }}>
                       <span

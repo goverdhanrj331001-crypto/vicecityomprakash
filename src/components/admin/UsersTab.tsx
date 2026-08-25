@@ -147,7 +147,24 @@ export function UsersTab({
                 <tr key={u.id}>
                   <td style={{ padding: '12px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <img src={u.avatar} alt="" style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover' }} />
+                      <div
+                        style={{
+                          width: 34,
+                          height: 34,
+                          borderRadius: '50%',
+                          backgroundColor: '#1a1749',
+                          color: '#ffffff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 700,
+                          fontSize: 13,
+                          flexShrink: 0,
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {u.name ? u.name.charAt(0) : (u.email ? u.email.charAt(0) : 'U')}
+                      </div>
                       <div>
                         <div style={{ fontWeight: 700, color: '#0f172a' }}>{u.name}</div>
                         <div style={{ fontSize: 11, color: '#64748b' }}>{u.id}</div>
@@ -156,7 +173,7 @@ export function UsersTab({
                   </td>
                   <td style={{ padding: '12px' }}>
                     <div style={{ fontWeight: 500, color: '#1e293b' }}>{u.email}</div>
-                    <div style={{ fontSize: 11, color: '#64748b' }}>{u.mobile}</div>
+                    <div style={{ fontSize: 11, color: '#64748b' }}>{u.mobile || '—'}</div>
                   </td>
                   <td style={{ padding: '12px', fontWeight: 600, color: '#0f172a' }}>{u.ordersCount}</td>
                   <td style={{ padding: '12px', fontWeight: 700, color: '#0f172a' }}>${u.totalSpent.toFixed(2)}</td>

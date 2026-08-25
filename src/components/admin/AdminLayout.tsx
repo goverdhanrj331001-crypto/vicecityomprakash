@@ -141,9 +141,36 @@ export function AdminLayout() {
       .catch((err) => {
         console.log('Payment gateways sync notice:', err);
       });
+
+    // 5. Fetch live Users from Supabase users_profile
+    fetch('/api/admin/users')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.users && Array.isArray(data.users)) {
+          const mappedUsers: AdminUser[] = data.users.map((u: any) => ({
+            id: u.id ? `USR-${u.id}` : `USR-${Math.floor(100 + Math.random() * 900)}`,
+            name: u.name || (u.email ? u.email.split('@')[0] : 'User'),
+            email: u.email,
+            mobile: u.mobile || '—',
+            role: u.role || 'customer',
+            ordersCount: Number(u.orders_count || 0),
+            totalSpent: Number(u.total_spent || 0),
+            status: u.status || 'active',
+            joinedDate: (u.created_at || '').split('T')[0] || new Date().toISOString().split('T')[0],
+            avatar: '',
+          }));
+          setUsers(mappedUsers);
+        } else {
+          setUsers([]);
+        }
+      })
+      .catch((err) => {
+        console.log('Live users sync notice:', err);
+        setUsers([]);
+      });
   }, []);
 
-  // Sync Transactions and Users realistically based on real DB Orders
+  // Sync Transactions realistically based on real DB Orders
   useEffect(() => {
     // 1. Generate Transactions (only for completed orders)
     const mappedTxns: AdminTransaction[] = orders
@@ -163,66 +190,6 @@ export function AdminLayout() {
         };
       });
     setTransactions(mappedTxns);
-
-    // 2. Generate Unique Users
-    const userMap = new Map<string, AdminUser>();
-
-    // Seed realistic administrative and content creator accounts
-    userMap.set('goverdhanrj331001@gmail.com', {
-      id: 'USR-001',
-      name: 'Goverdhan Admin',
-      email: 'goverdhanrj331001@gmail.com',
-      mobile: '+91 0000000000',
-      role: 'super_admin',
-      ordersCount: orders.filter((o) => o.customerEmail === 'goverdhanrj331001@gmail.com').length,
-      totalSpent: Number(orders.filter((o) => o.customerEmail === 'goverdhanrj331001@gmail.com' && o.status === 'completed').reduce((s, o) => s + o.amountUsd, 0).toFixed(2)),
-      status: 'active',
-      joinedDate: '2026-01-01',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    });
-
-    userMap.set('modderpro@5mods.com', {
-      id: 'USR-002',
-      name: 'GtaModderPro',
-      email: 'modderpro@5mods.com',
-      mobile: '+91 9123456789',
-      role: 'modder',
-      ordersCount: orders.filter((o) => o.customerEmail === 'modderpro@5mods.com').length,
-      totalSpent: Number(orders.filter((o) => o.customerEmail === 'modderpro@5mods.com' && o.status === 'completed').reduce((s, o) => s + o.amountUsd, 0).toFixed(2)),
-      status: 'active',
-      joinedDate: '2026-02-18',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
-    });
-
-    // Populate actual customers from live orders
-    orders.forEach((o, index) => {
-      const email = o.customerEmail || 'customer@example.com';
-      if (userMap.has(email)) {
-        const u = userMap.get(email)!;
-        // Skip admins/modders from being counted as standard customer roles unless they are just customers
-        if (u.role === 'customer') {
-          u.ordersCount += 1;
-          if (o.status === 'completed') {
-            u.totalSpent = Number((u.totalSpent + o.amountUsd).toFixed(2));
-          }
-        }
-      } else {
-        userMap.set(email, {
-          id: `USR-${100 + index}`,
-          name: o.customerName || 'Anonymous Customer',
-          email: email,
-          mobile: o.customerMobile || 'N/A',
-          role: 'customer',
-          ordersCount: 1,
-          totalSpent: o.status === 'completed' ? o.amountUsd : 0,
-          status: 'active',
-          joinedDate: o.date || new Date().toISOString().split('T')[0],
-          avatar: `https://images.unsplash.com/photo-1535713875002?auto=format&fit=crop&w=120&q=80`,
-        });
-      }
-    });
-
-    setUsers(Array.from(userMap.values()));
   }, [orders]);
 
   const pendingOrdersCount = orders.filter((o) => o.status === 'pending').length;
