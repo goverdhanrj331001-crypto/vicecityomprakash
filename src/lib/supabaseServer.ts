@@ -136,14 +136,7 @@ export async function getDynamicMods(categorySlug?: string): Promise<Mod[]> {
       fileSize: item.file_size,
     }));
 
-    const combinedResult: Mod[] = [...supabaseMods];
-    localCustom.forEach((m) => {
-      if (!combinedResult.some((p) => p.slug === m.slug)) {
-        combinedResult.push(m);
-      }
-    });
-
-    let result = combinedResult;
+    let result = supabaseMods;
     if (categorySlug && categorySlug !== 'all') {
       result = result.filter(m => m.category.toLowerCase().replace(/\s+/g, '') === categorySlug.toLowerCase().replace(/\s+/g, ''));
     }
