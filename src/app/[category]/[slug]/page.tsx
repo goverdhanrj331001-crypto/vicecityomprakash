@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ModGallery } from '@/components/mod/ModGallery';
 import { ModDescription } from '@/components/mod/ModDescription';
 import { ModSidebar } from '@/components/mod/ModSidebar';
-import { PRODUCT_DETAIL_MOD, LATEST_MODS, MOST_LIKED_MODS, FEATURED_MODS } from '@/lib/mockData';
+import { notFound } from 'next/navigation';
 import { getDynamicModBySlug, getDynamicMods } from '@/lib/supabaseServer';
 import { getYouTubeEmbedUrl } from '@/lib/utils';
 import type { Mod, ModCategory } from '@/types';
@@ -22,62 +22,7 @@ export default async function DynamicModDetailPage({ params }: ModPageProps) {
   let mod = await getDynamicModBySlug(slug);
 
   if (!mod) {
-    const allMods: Mod[] = [
-      PRODUCT_DETAIL_MOD,
-      ...LATEST_MODS,
-      ...MOST_LIKED_MODS,
-    ];
-
-    mod = allMods.find(
-      (m) => m.slug.toLowerCase() === slug.toLowerCase() || m.slug.toLowerCase().includes(slug.toLowerCase())
-    ) || null;
-  }
-
-  if (!mod) {
-    const featuredMatch = FEATURED_MODS.find(
-      (f) => f.slug.toLowerCase() === slug.toLowerCase() || f.slug.toLowerCase().includes(slug.toLowerCase())
-    );
-    if (featuredMatch) {
-      mod = {
-        id: 9999,
-        slug: featuredMatch.slug,
-        title: featuredMatch.title,
-        version: featuredMatch.version,
-        category: (featuredMatch.category as ModCategory) || 'paintjobs',
-        subCategories: ['Featured', featuredMatch.category],
-        author: { username: featuredMatch.author },
-        stats: { downloads: 0, likes: 0, commentsCount: 0 },
-        tags: [
-          { name: 'Featured', slug: 'featured' },
-          { name: featuredMatch.category, slug: featuredMatch.category },
-        ],
-        description: `High quality ${featuredMatch.title} digital asset package for Grand Theft Auto V. Created by ${featuredMatch.author}. Easy installation and compatibility with latest GTA 5 patches.`,
-        coverImage: featuredMatch.coverImage,
-        thumbnailImages: [featuredMatch.thumbnailImage, featuredMatch.coverImage],
-        allVersions: [
-          {
-            version: featuredMatch.version,
-            isCurrent: true,
-            downloads: 0,
-            fileSize: '15.4 MB',
-            uploadedAt: '2025-01-10T12:00:00Z',
-            downloadUrl: '#download',
-          },
-        ],
-        firstUploadedAt: '2025-01-10T12:00:00Z',
-        lastUpdatedAt: '2025-01-10T12:00:00Z',
-        isFeatured: true,
-      };
-    }
-  }
-
-  if (!mod) {
-    mod = {
-      ...PRODUCT_DETAIL_MOD,
-      title: slug.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-      category: (category as ModCategory) || 'paintjobs',
-      slug: slug,
-    };
+    notFound();
   }
 
   const allModsForRelated = await getDynamicMods();

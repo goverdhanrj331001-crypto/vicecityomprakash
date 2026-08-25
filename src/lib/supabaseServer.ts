@@ -61,60 +61,50 @@ function getLocalCustomMods(): Mod[] {
 
 export async function getDynamicMods(categorySlug?: string): Promise<Mod[]> {
   const supabase = getSupabaseAdmin() || getSupabase();
-  const localCustom = getLocalCustomMods();
-  const mockMods = [...LATEST_MODS, ...MOST_LIKED_MODS];
-  const defaultList: Mod[] = [...localCustom];
-  mockMods.forEach((m) => {
-    if (!defaultList.some((p) => p.slug === m.slug)) {
-      defaultList.push(m);
-    }
-  });
 
+  // If Supabase is NOT configured, use local custom storage or empty list
   if (!supabase || !isSupabaseConfigured()) {
-    let result = defaultList;
+    const localCustom = getLocalCustomMods();
+    let result = localCustom;
     if (categorySlug && categorySlug !== 'all') {
-      result = result.filter(m => m.category.toLowerCase().replace(/\s+/g, '') === categorySlug.toLowerCase().replace(/\s+/g, ''));
+      const target = categorySlug.toLowerCase().replace(/[^a-z0-9]/g, '');
+      result = result.filter(
+        (m) =>
+          m.category.toLowerCase().replace(/[^a-z0-9]/g, '') === target ||
+          (m.subCategories && m.subCategories.some((sc) => sc.toLowerCase().replace(/[^a-z0-9]/g, '') === target))
+      );
     }
     return result;
   }
 
   try {
-    let query = supabase
+    const { data, error } = await supabase
       .from('mods')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (categorySlug && categorySlug !== 'all') {
-      query = query.ilike('category', categorySlug);
+    if (error || !data) {
+      console.error('Error fetching mods from Supabase:', error);
+      return [];
     }
 
-    const { data, error } = await query;
-
-    if (error || !data || data.length === 0) {
-      let result = defaultList;
-      if (categorySlug && categorySlug !== 'all') {
-        result = result.filter(m => m.category.toLowerCase().replace(/\s+/g, '') === categorySlug.toLowerCase().replace(/\s+/g, ''));
-      }
-      return result;
-    }
-
-    const supabaseMods = data.map((item: any) => ({
+    const supabaseMods: Mod[] = data.map((item: any) => ({
       id: item.id,
       slug: item.slug,
       title: item.title,
       version: item.version || '1.0.0',
-      category: item.category || 'paintjobs',
-      subCategories: item.sub_categories || [item.category],
+      category: (item.category || 'paintjobs').toLowerCase().replace(/[^a-z0-9]/g, '') as any,
+      subCategories: item.sub_categories || [item.category || 'Paint Jobs'],
       author: {
         username: item.author || 'GtaModderPro',
       },
       stats: {
-        downloads: item.downloads || 0,
-        likes: item.likes || 0,
-        rating: item.rating || 5,
-        commentsCount: item.comments_count || 0,
+        downloads: Number(item.downloads || 0),
+        likes: Number(item.likes || 0),
+        rating: Number(item.rating || 5),
+        commentsCount: Number(item.comments_count || 0),
       },
-      tags: (item.tags || []).map((t: string) => ({ name: t, slug: t.toLowerCase() })),
+      tags: (item.tags || []).map((t: string) => ({ name: t, slug: t.toLowerCase().replace(/[^a-z0-9]/g, '') })),
       description: item.description || '',
       coverImage: item.cover_image || '/images/catgirl_1.jpg',
       thumbnailImages: item.thumbnail_images && item.thumbnail_images.length > 0 ? item.thumbnail_images : [item.cover_image || '/images/catgirl_1.jpg'],
@@ -123,7 +113,7 @@ export async function getDynamicMods(categorySlug?: string): Promise<Mod[]> {
         {
           version: item.version || '1.0.0',
           isCurrent: true,
-          downloads: item.downloads || 0,
+          downloads: Number(item.downloads || 0),
           fileSize: item.file_size || '15 MB',
           uploadedAt: item.created_at || new Date().toISOString(),
           downloadUrl: item.zip_url || '#',
@@ -131,33 +121,34 @@ export async function getDynamicMods(categorySlug?: string): Promise<Mod[]> {
       ],
       firstUploadedAt: item.created_at || '',
       lastUpdatedAt: item.updated_at || item.created_at || '',
-      isFeatured: item.is_featured || item.status === 'featured',
-      price: item.price,
+      isFeatured: Boolean(item.is_featured || item.status === 'featured'),
+      price: item.price !== undefined ? Number(item.price) : 0,
       fileSize: item.file_size,
     }));
 
     let result = supabaseMods;
     if (categorySlug && categorySlug !== 'all') {
-      result = result.filter(m => m.category.toLowerCase().replace(/\s+/g, '') === categorySlug.toLowerCase().replace(/\s+/g, ''));
+      const target = categorySlug.toLowerCase().replace(/[^a-z0-9]/g, '');
+      result = result.filter(
+        (m) =>
+          m.category.toLowerCase().replace(/[^a-z0-9]/g, '') === target ||
+          (m.subCategories && m.subCategories.some((sc) => sc.toLowerCase().replace(/[^a-z0-9]/g, '') === target)) ||
+          (m.tags && m.tags.some((t) => t.slug === target))
+      );
     }
     return result;
   } catch (err) {
-    console.error('Supabase getDynamicMods error, falling back to local list:', err);
-    let result = defaultList;
-    if (categorySlug && categorySlug !== 'all') {
-      result = result.filter(m => m.category.toLowerCase().replace(/\s+/g, '') === categorySlug.toLowerCase().replace(/\s+/g, ''));
-    }
-    return result;
+    console.error('Supabase getDynamicMods error:', err);
+    return [];
   }
 }
 
 export async function getDynamicModBySlug(slug: string): Promise<Mod | null> {
-  const supabase = getSupabase();
-  const localCustom = getLocalCustomMods();
-  const foundLocal = localCustom.find(m => m.slug === slug);
+  const supabase = getSupabaseAdmin() || getSupabase();
 
   if (!supabase || !isSupabaseConfigured()) {
-    return foundLocal || null;
+    const localCustom = getLocalCustomMods();
+    return localCustom.find((m) => m.slug === slug) || null;
   }
 
   try {
@@ -165,10 +156,10 @@ export async function getDynamicModBySlug(slug: string): Promise<Mod | null> {
       .from('mods')
       .select('*')
       .eq('slug', slug)
-      .single();
+      .maybeSingle();
 
     if (error || !data) {
-      return foundLocal || null;
+      return null;
     }
 
     return {
@@ -176,18 +167,18 @@ export async function getDynamicModBySlug(slug: string): Promise<Mod | null> {
       slug: data.slug,
       title: data.title,
       version: data.version || '1.0.0',
-      category: data.category || 'paintjobs',
-      subCategories: data.sub_categories || [data.category],
+      category: (data.category || 'paintjobs').toLowerCase().replace(/[^a-z0-9]/g, '') as any,
+      subCategories: data.sub_categories || [data.category || 'Paint Jobs'],
       author: {
         username: data.author || 'GtaModderPro',
       },
       stats: {
-        downloads: data.downloads || 0,
-        likes: data.likes || 0,
-        rating: data.rating || 5,
-        commentsCount: data.comments_count || 0,
+        downloads: Number(data.downloads || 0),
+        likes: Number(data.likes || 0),
+        rating: Number(data.rating || 5),
+        commentsCount: Number(data.comments_count || 0),
       },
-      tags: (data.tags || []).map((t: string) => ({ name: t, slug: t.toLowerCase() })),
+      tags: (data.tags || []).map((t: string) => ({ name: t, slug: t.toLowerCase().replace(/[^a-z0-9]/g, '') })),
       description: data.description || '',
       coverImage: data.cover_image || '/images/catgirl_1.jpg',
       thumbnailImages: data.thumbnail_images && data.thumbnail_images.length > 0 ? data.thumbnail_images : [data.cover_image || '/images/catgirl_1.jpg'],
@@ -196,7 +187,7 @@ export async function getDynamicModBySlug(slug: string): Promise<Mod | null> {
         {
           version: data.version || '1.0.0',
           isCurrent: true,
-          downloads: data.downloads || 0,
+          downloads: Number(data.downloads || 0),
           fileSize: data.file_size || '15 MB',
           uploadedAt: data.created_at || new Date().toISOString(),
           downloadUrl: data.zip_url || '#',
@@ -204,12 +195,12 @@ export async function getDynamicModBySlug(slug: string): Promise<Mod | null> {
       ],
       firstUploadedAt: data.created_at || '',
       lastUpdatedAt: data.updated_at || data.created_at || '',
-      isFeatured: data.is_featured || data.status === 'featured',
-      price: data.price,
+      isFeatured: Boolean(data.is_featured || data.status === 'featured'),
+      price: data.price !== undefined ? Number(data.price) : 0,
       fileSize: data.file_size,
     };
   } catch (err) {
     console.error('Supabase getDynamicModBySlug error:', err);
-    return foundLocal || null;
+    return null;
   }
 }
