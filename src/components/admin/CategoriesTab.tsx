@@ -20,6 +20,7 @@ export function CategoriesTab({
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [description, setDescription] = useState('');
   const [isPermitted, setIsPermitted] = useState(true);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -36,8 +37,10 @@ export function CategoriesTab({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Always store the raw file so we can upload it at save time if needed
+    setSelectedFile(file);
     setIsUploadingImage(true);
-    setUploadFeedback('Uploading category image to Cloud CDN...');
+    setUploadFeedback('Uploading category image...');
 
     try {
       const formData = new FormData();
@@ -50,20 +53,27 @@ export function CategoriesTab({
       });
 
       const data = await res.json();
-      if (data.success && data.url) {
+      if (data.success && data.url && data.isR2Active) {
+        // Real R2 CDN URL — store directly, no need to re-upload at save time
         setImageUrl(data.url);
-        setUploadFeedback(`✓ Image successfully uploaded: ${file.name}`);
+        setSelectedFile(null);
+        setUploadFeedback(`✓ Image uploaded to cloud: ${file.name}`);
+      } else if (data.success && data.url) {
+        // R2 returned a URL but file may not be in bucket yet — keep file for re-upload at save
+        const previewUrl = URL.createObjectURL(file);
+        setImageUrl(previewUrl);
+        setUploadFeedback(`Image selected (will upload on save): ${file.name}`);
       } else {
-        // Fallback to local preview if needed
-        const fakeUrl = URL.createObjectURL(file);
-        setImageUrl(fakeUrl);
-        setUploadFeedback(`Image ready: ${file.name}`);
+        // Upload failed, keep local preview
+        const previewUrl = URL.createObjectURL(file);
+        setImageUrl(previewUrl);
+        setUploadFeedback(`Image selected (will upload on save): ${file.name}`);
       }
     } catch (err: any) {
       console.warn('Image upload notice:', err);
-      const fakeUrl = URL.createObjectURL(file);
-      setImageUrl(fakeUrl);
-      setUploadFeedback(`Image selected: ${file.name}`);
+      const previewUrl = URL.createObjectURL(file);
+      setImageUrl(previewUrl);
+      setUploadFeedback(`Image selected (will upload on save): ${file.name}`);
     } finally {
       setIsUploadingImage(false);
     }
@@ -75,13 +85,38 @@ export function CategoriesTab({
 
     setIsSaving(true);
     const categorySlug = slug.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-    const iconValue = imageUrl.trim() || 'fa fa-cube';
+
+    // If imageUrl is a blob (local preview) and we still have the file, upload it now to Supabase Storage
+    let finalIconValue = imageUrl.trim();
+    if (selectedFile && (finalIconValue.startsWith('blob:') || finalIconValue === '')) {
+      try {
+        setUploadFeedback('Uploading image to storage...');
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('folder', 'images');
+        const uploadRes = await fetch('/api/storage/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success && uploadData.url) {
+          finalIconValue = uploadData.url;
+        }
+      } catch (uploadErr) {
+        console.warn('Image upload at save time failed:', uploadErr);
+      }
+    }
+
+    // If still no valid URL (blob or empty), fallback to cube icon
+    if (!finalIconValue || finalIconValue.startsWith('blob:')) {
+      finalIconValue = 'fa fa-cube';
+    }
 
     const newCat: AdminCategory = {
       id: `cat-${Date.now()}`,
       name: name.trim(),
       slug: categorySlug,
-      icon: iconValue,
+      icon: finalIconValue,
       modsCount: 0,
       revenue: 0,
       status: isPermitted ? 'active' : 'disabled',
@@ -90,7 +125,7 @@ export function CategoriesTab({
     onAddCategory(newCat);
 
     try {
-      await fetch('/api/categories', {
+      const res = await fetch('/api/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -98,14 +133,21 @@ export function CategoriesTab({
           description: description.trim(),
         }),
       });
+      const result = await res.json();
+      if (!result.success) {
+        console.error('Supabase save error:', result.error);
+        alert('Category save failed: ' + (result.error || 'Unknown error'));
+      }
     } catch (err) {
       console.error('Error saving category to Supabase:', err);
+      alert('Network error while saving category. Please try again.');
     } finally {
       setIsSaving(false);
       setViewMode('list');
       setName('');
       setSlug('');
       setImageUrl('');
+      setSelectedFile(null);
       setDescription('');
       setUploadFeedback(null);
     }
