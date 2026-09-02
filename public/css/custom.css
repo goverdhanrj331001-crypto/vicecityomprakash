@@ -208,6 +208,20 @@
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.9)) !important;
     transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
   }
+  #navigation > li.tools .icon-category { background-position: center 0px; }
+  #navigation > li.vehicles .icon-category { background-position: center -115px; }
+  #navigation > li.paintjobs .icon-category { background-position: center -230px; }
+  #navigation > li.weapons .icon-category { background-position: center -345px; }
+  #navigation > li.scripts .icon-category { background-position: center -460px; }
+  #navigation > li.player .icon-category { background-position: center -575px; }
+  #navigation > li.maps .icon-category { background-position: center -690px; }
+  #navigation > li.misc .icon-category { background-position: center -805px; }
+  #navigation > li.more .icon-category { background-position: center -920px; }
+  #navigation > li.custom-category .icon-category,
+  #navigation > li .icon-category.custom-icon,
+  #navigation > li .icon-category.has-custom-img {
+    background: none !important;
+  }
   #navigation > li:hover .icon-category {
     opacity: 1 !important;
     transform: translateY(-2px);

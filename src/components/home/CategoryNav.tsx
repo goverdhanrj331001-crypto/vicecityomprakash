@@ -118,14 +118,52 @@ export function CategoryNav() {
                   <li key={cat.slug} className={isKnownClass ? cat.slug.toLowerCase() : 'custom-category'}>
                     <Link href={`/${cat.slug}`}>
                       {isImage ? (
-                        <span className="icon-category" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <img src={cat.icon} alt={cat.name} style={{ width: 26, height: 26, objectFit: 'contain', borderRadius: 4 }} />
+                        <span
+                          className="icon-category custom-icon"
+                          style={{
+                            background: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 115,
+                            padding: 8,
+                          }}
+                        >
+                          <img
+                            src={cat.icon}
+                            alt={cat.name}
+                            style={{
+                              maxWidth: 72,
+                              maxHeight: 72,
+                              width: 'auto',
+                              height: 'auto',
+                              objectFit: 'contain',
+                              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))',
+                              borderRadius: 6,
+                            }}
+                          />
                         </span>
                       ) : isKnownClass ? (
                         <span className="icon-category" />
                       ) : (
-                        <span className="icon-category" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <i className={cat.icon && cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon || 'cube'}`} style={{ fontSize: 22, color: '#ffffff' }} />
+                        <span
+                          className="icon-category custom-icon"
+                          style={{
+                            background: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 115,
+                          }}
+                        >
+                          <i
+                            className={cat.icon && cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon || 'cube'}`}
+                            style={{
+                              fontSize: 48,
+                              color: '#ffffff',
+                              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))',
+                            }}
+                          />
                         </span>
                       )}
                       <span className="label-category">
