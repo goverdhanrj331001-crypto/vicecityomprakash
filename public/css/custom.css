@@ -209,14 +209,14 @@
     transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
   }
   #navigation > li.tools .icon-category { background-position: center 0px; }
-  #navigation > li.vehicles .icon-category { background-position: center -115px; }
-  #navigation > li.paintjobs .icon-category { background-position: center -230px; }
-  #navigation > li.weapons .icon-category { background-position: center -345px; }
-  #navigation > li.scripts .icon-category { background-position: center -460px; }
-  #navigation > li.player .icon-category { background-position: center -575px; }
-  #navigation > li.maps .icon-category { background-position: center -690px; }
-  #navigation > li.misc .icon-category { background-position: center -805px; }
-  #navigation > li.more .icon-category { background-position: center -920px; }
+  #navigation > li.vehicles .icon-category { background-position: center -128px; }
+  #navigation > li.paintjobs .icon-category { background-position: center -256px; }
+  #navigation > li.weapons .icon-category { background-position: center -384px; }
+  #navigation > li.scripts .icon-category { background-position: center -512px; }
+  #navigation > li.player .icon-category { background-position: center -640px; }
+  #navigation > li.maps .icon-category { background-position: center -768px; }
+  #navigation > li.misc .icon-category { background-position: center -896px; }
+  #navigation > li.more .icon-category { background-position: center -1024px; }
   #navigation > li.custom-category .icon-category,
   #navigation > li .icon-category.custom-icon,
   #navigation > li .icon-category.has-custom-img {

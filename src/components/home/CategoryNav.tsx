@@ -50,6 +50,59 @@ const INITIAL_NAV: CategoryItem[] = [
   { id: 8, name: 'Misc', slug: 'misc', icon: 'fa fa-cubes', status: 'active' },
 ];
 
+function resolveCategoryIcon(iconStr?: string, slug?: string, name?: string): { isImage: boolean; value: string } {
+  const raw = (iconStr || '').trim();
+
+  // 1. Check if it's an Image URL
+  if (
+    raw.startsWith('http://') ||
+    raw.startsWith('https://') ||
+    raw.startsWith('/') ||
+    raw.startsWith('data:image')
+  ) {
+    return { isImage: true, value: raw };
+  }
+
+  const keyword = `${name || ''} ${slug || ''} ${raw}`.toLowerCase();
+
+  // 2. Map keyword icons to valid FontAwesome 4.7 classes
+  if (keyword.includes('animal') || keyword.includes('pet') || keyword.includes('dog') || keyword.includes('cat')) {
+    return { isImage: false, value: 'fa fa-paw' };
+  }
+  if (keyword.includes('vehicle') || keyword.includes('car') || keyword.includes('bike') || keyword.includes('auto')) {
+    return { isImage: false, value: 'fa fa-car' };
+  }
+  if (keyword.includes('paint') || keyword.includes('livery') || keyword.includes('skin')) {
+    return { isImage: false, value: 'fa fa-paint-brush' };
+  }
+  if (keyword.includes('weapon') || keyword.includes('gun') || keyword.includes('ammo')) {
+    return { isImage: false, value: 'fa fa-crosshairs' };
+  }
+  if (keyword.includes('script') || keyword.includes('code') || keyword.includes('mod')) {
+    return { isImage: false, value: 'fa fa-code' };
+  }
+  if (keyword.includes('player') || keyword.includes('ped') || keyword.includes('character')) {
+    return { isImage: false, value: 'fa fa-user' };
+  }
+  if (keyword.includes('map') || keyword.includes('mlo') || keyword.includes('location')) {
+    return { isImage: false, value: 'fa fa-map-marker' };
+  }
+  if (keyword.includes('tool') || keyword.includes('util')) {
+    return { isImage: false, value: 'fa fa-wrench' };
+  }
+
+  // 3. If raw starts with fa
+  if (raw.startsWith('fa ') || raw.startsWith('fa-')) {
+    return { isImage: false, value: raw.startsWith('fa ') ? raw : `fa ${raw}` };
+  }
+
+  if (raw) {
+    return { isImage: false, value: `fa fa-${raw.replace(/^fa-?/, '')}` };
+  }
+
+  return { isImage: false, value: 'fa fa-cube' };
+}
+
 export function CategoryNav() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -112,12 +165,17 @@ export function CategoryNav() {
           <div className="container">
             <ul id="navigation">
               {categories.map((cat) => {
-                const isImage = cat.icon && (cat.icon.startsWith('http://') || cat.icon.startsWith('https://') || cat.icon.startsWith('/') || cat.icon.startsWith('data:'));
-                const isKnownClass = !isImage && ['tools', 'vehicles', 'paintjobs', 'weapons', 'scripts', 'player', 'maps', 'misc'].includes(cat.slug.toLowerCase());
+                const resolved = resolveCategoryIcon(cat.icon, cat.slug, cat.name);
+                const isKnownClass =
+                  !resolved.isImage &&
+                  ['tools', 'vehicles', 'paintjobs', 'weapons', 'scripts', 'player', 'maps', 'misc'].includes(
+                    cat.slug.toLowerCase()
+                  );
+
                 return (
                   <li key={cat.slug} className={isKnownClass ? cat.slug.toLowerCase() : 'custom-category'}>
                     <Link href={`/${cat.slug}`}>
-                      {isImage ? (
+                      {resolved.isImage ? (
                         <span
                           className="icon-category custom-icon"
                           style={{
@@ -126,22 +184,34 @@ export function CategoryNav() {
                             alignItems: 'center',
                             justifyContent: 'center',
                             height: 115,
-                            padding: 8,
+                            padding: '4px',
                           }}
                         >
-                          <img
-                            src={cat.icon}
-                            alt={cat.name}
+                          <div
                             style={{
-                              maxWidth: 72,
-                              maxHeight: 72,
-                              width: 'auto',
-                              height: 'auto',
-                              objectFit: 'contain',
-                              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))',
-                              borderRadius: 6,
+                              width: 58,
+                              height: 58,
+                              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                              borderRadius: 12,
+                              padding: 6,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.45)',
+                              border: '1px solid rgba(255, 255, 255, 0.4)',
+                              overflow: 'hidden',
                             }}
-                          />
+                          >
+                            <img
+                              src={resolved.value}
+                              alt={cat.name}
+                              style={{
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          </div>
                         </span>
                       ) : isKnownClass ? (
                         <span className="icon-category" />
@@ -157,11 +227,11 @@ export function CategoryNav() {
                           }}
                         >
                           <i
-                            className={cat.icon && cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon || 'cube'}`}
+                            className={resolved.value}
                             style={{
-                              fontSize: 48,
+                              fontSize: 44,
                               color: '#ffffff',
-                              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))',
+                              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))',
                             }}
                           />
                         </span>
@@ -212,10 +282,10 @@ export function CategoryNav() {
             >
               {categories.map((cat) => {
                 const slugLower = cat.slug.toLowerCase();
-                const isImage = cat.icon && (cat.icon.startsWith('http://') || cat.icon.startsWith('https://') || cat.icon.startsWith('/') || cat.icon.startsWith('data:'));
-                const imageSrc = isImage ? cat.icon : (DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg');
+                const resolved = resolveCategoryIcon(cat.icon, cat.slug, cat.name);
+                const imageSrc = resolved.isImage ? resolved.value : (DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg');
                 const gradient = DEFAULT_GRADIENTS[slugLower] || 'linear-gradient(45deg, #10b981, #3b82f6)';
-                const iconClass = !isImage && cat.icon ? (cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon}`) : (!isImage ? 'fa fa-cube' : '');
+                const iconClass = !resolved.isImage ? resolved.value : '';
 
                 return (
                   <Link
