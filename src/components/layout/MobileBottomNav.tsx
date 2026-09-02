@@ -151,14 +151,13 @@ export function MobileBottomNav() {
               {categories.map((cat) => {
                 const isActive = pathname === `/${cat.slug}`;
                 const slugLower = cat.slug.toLowerCase();
-                const imageSrc = DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg';
+                const isImage = cat.icon && (cat.icon.startsWith('http://') || cat.icon.startsWith('https://') || cat.icon.startsWith('/') || cat.icon.startsWith('data:'));
+                const imageSrc = isImage ? cat.icon : (DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg');
                 const gradient = DEFAULT_GRADIENTS[slugLower] || 'linear-gradient(45deg, #10b981, #3b82f6)';
                 
-                let iconClass = cat.icon || 'fa fa-cube';
-                if (iconClass.startsWith('fa-')) {
-                  iconClass = `fa ${iconClass}`;
-                } else if (!iconClass.startsWith('fa ') && !iconClass.startsWith('fa-')) {
-                  iconClass = `fa ${iconClass}`;
+                let iconClass = '';
+                if (!isImage && cat.icon) {
+                  iconClass = cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon}`;
                 }
 
                 return (
@@ -178,17 +177,20 @@ export function MobileBottomNav() {
                       }}
                     >
                       <div className="story-circle">
-                        <Image
+                        <img
                           src={imageSrc}
                           alt={cat.name}
                           width={72}
                           height={72}
                           className="story-img"
                           referrerPolicy="no-referrer"
+                          style={{ objectFit: 'cover' }}
                         />
-                        <div className="story-icon-overlay">
-                          <span className={iconClass} aria-hidden="true" />
-                        </div>
+                        {iconClass && (
+                          <div className="story-icon-overlay">
+                            <span className={iconClass} aria-hidden="true" />
+                          </div>
+                        )}
                       </div>
                       {cat.badge && <span className="story-badge">{cat.badge}</span>}
                     </div>

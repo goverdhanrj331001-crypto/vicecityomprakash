@@ -50,22 +50,62 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const { data, error } = await supabase.from('categories').upsert([
-      {
-        name: body.name,
-        slug: body.slug,
-        icon: body.icon || 'fa fa-cube',
-        description: body.description || '',
-        mods_count: Number(body.modsCount || 0),
-        status: body.status || 'active',
-      },
-    ], { onConflict: 'slug' }).select();
+    const payload: Record<string, any> = {
+      name: body.name,
+      slug: body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      icon: body.icon || body.imageUrl || body.image || 'fa fa-cube',
+      description: body.description || '',
+      mods_count: Number(body.modsCount || 0),
+      status: body.status || 'active',
+    };
 
-    if (error) throw error;
+    const { data, error } = await supabase
+      .from('categories')
+      .upsert([payload], { onConflict: 'slug' })
+      .select();
+
+    if (error) {
+      console.error('Supabase categories upsert error:', error);
+      // If error occurs due to missing columns or length, try fallback
+      throw error;
+    }
 
     return NextResponse.json({ success: true, category: data?.[0] || body });
   } catch (err: any) {
     console.error('Error saving category to Supabase:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { slug, id } = body;
+
+    const supabase = getSupabaseAdmin() || getSupabase();
+
+    if (!supabase || !isSupabaseConfigured()) {
+      return NextResponse.json({ success: true, message: 'Deleted locally' });
+    }
+
+    let query = supabase.from('categories').delete();
+    if (slug) {
+      query = query.eq('slug', slug);
+    } else if (id) {
+      query = query.eq('id', id);
+    } else {
+      return NextResponse.json({ error: 'Missing slug or id parameter' }, { status: 400 });
+    }
+
+    const { error } = await query;
+    if (error) {
+      console.error('Failed to delete category from Supabase:', error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ success: true, message: 'Category deleted successfully' });
+  } catch (err: any) {
+    console.error('Error deleting category:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

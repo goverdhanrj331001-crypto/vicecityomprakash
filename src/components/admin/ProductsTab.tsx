@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { AdminProduct } from '@/lib/adminData';
+import type { AdminProduct, AdminCategory } from '@/lib/adminData';
 import { getYouTubeEmbedUrl, extractYouTubeVideoId, getYouTubeThumbnailUrl } from '@/lib/utils';
 
 interface ProductsTabProps {
   products: AdminProduct[];
+  categories?: AdminCategory[];
   onAddProduct: (product: AdminProduct) => void;
   onUpdateProduct: (product: AdminProduct) => void;
   onDeleteProduct: (productId: string) => void;
@@ -14,6 +15,7 @@ interface ProductsTabProps {
 
 export function ProductsTab({
   products,
+  categories = [],
   onAddProduct,
   onUpdateProduct,
   onDeleteProduct,
@@ -23,13 +25,25 @@ export function ProductsTab({
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  const activeCategories = (categories && categories.length > 0)
+    ? categories.filter((c) => c.status !== 'disabled')
+    : [
+        { id: 'cat-1', name: 'Vehicles', slug: 'vehicles', icon: 'fa-car', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-2', name: 'Paint Jobs', slug: 'paintjobs', icon: 'fa-paint-brush', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-3', name: 'Scripts', slug: 'scripts', icon: 'fa-code', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-4', name: 'Weapons', slug: 'weapons', icon: 'fa-crosshairs', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-5', name: 'Player & Peds', slug: 'player', icon: 'fa-user-secret', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-6', name: 'Maps & MLO', slug: 'maps', icon: 'fa-map-marker', modsCount: 0, revenue: 0, status: 'active' as const },
+        { id: 'cat-7', name: 'Tools & Utilities', slug: 'tools', icon: 'fa-wrench', modsCount: 0, revenue: 0, status: 'active' as const },
+      ];
+
   // Screen view state: 'list' or 'form'
   const [viewMode, setViewMode] = useState<'list' | 'form'>('list');
   const [editingProduct, setEditingProduct] = useState<AdminProduct | null>(null);
 
   // Form fields
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Paint Jobs');
+  const [category, setCategory] = useState(activeCategories[0]?.name || 'Vehicles');
   const [price, setPrice] = useState('4.99');
   const [author, setAuthor] = useState('GtaModderPro');
   const [fileSize, setFileSize] = useState('48.5 MB');
@@ -176,7 +190,9 @@ export function ProductsTab({
       p.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.slug.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
+    const matchesCategory =
+      categoryFilter === 'all' ||
+      p.category.toLowerCase().trim() === categoryFilter.toLowerCase().trim();
     const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
 
     return matchesSearch && matchesCategory && matchesStatus;
@@ -185,7 +201,7 @@ export function ProductsTab({
   const handleOpenAddScreen = () => {
     setEditingProduct(null);
     setTitle('');
-    setCategory('Paint Jobs');
+    setCategory(activeCategories[0]?.name || 'Vehicles');
     setPrice('4.99');
     setAuthor('GtaModderPro');
     setFileSize('48.5 MB');
@@ -435,12 +451,14 @@ export function ProductsTab({
                     backgroundColor: '#fafafa',
                   }}
                 >
-                  <option value="Vehicles">Vehicles</option>
-                  <option value="Paint Jobs">Paint Jobs</option>
-                  <option value="Scripts">Scripts</option>
-                  <option value="Weapons">Weapons</option>
-                  <option value="Player">Player &amp; Peds</option>
-                  <option value="Maps">Maps &amp; MLO</option>
+                  {activeCategories.map((c) => (
+                    <option key={c.id || c.slug} value={c.name}>
+                      {c.name}
+                    </option>
+                  ))}
+                  {category && !activeCategories.some((c) => c.name.toLowerCase() === category.toLowerCase()) && (
+                    <option value={category}>{category}</option>
+                  )}
                 </select>
               </div>
 
@@ -1134,11 +1152,11 @@ export function ProductsTab({
               }}
             >
               <option value="all">All Categories</option>
-              <option value="Vehicles">Vehicles</option>
-              <option value="Paint Jobs">Paint Jobs</option>
-              <option value="Scripts">Scripts</option>
-              <option value="Weapons">Weapons</option>
-              <option value="Maps">Maps</option>
+              {activeCategories.map((c) => (
+                <option key={c.id || c.slug} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
             </select>
           </div>
 

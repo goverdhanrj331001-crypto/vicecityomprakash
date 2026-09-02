@@ -112,15 +112,20 @@ export function CategoryNav() {
           <div className="container">
             <ul id="navigation">
               {categories.map((cat) => {
-                const isKnownClass = ['tools', 'vehicles', 'paintjobs', 'weapons', 'scripts', 'player', 'maps', 'misc'].includes(cat.slug.toLowerCase());
+                const isImage = cat.icon && (cat.icon.startsWith('http://') || cat.icon.startsWith('https://') || cat.icon.startsWith('/') || cat.icon.startsWith('data:'));
+                const isKnownClass = !isImage && ['tools', 'vehicles', 'paintjobs', 'weapons', 'scripts', 'player', 'maps', 'misc'].includes(cat.slug.toLowerCase());
                 return (
                   <li key={cat.slug} className={isKnownClass ? cat.slug.toLowerCase() : 'custom-category'}>
                     <Link href={`/${cat.slug}`}>
-                      {isKnownClass ? (
+                      {isImage ? (
+                        <span className="icon-category" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <img src={cat.icon} alt={cat.name} style={{ width: 26, height: 26, objectFit: 'contain', borderRadius: 4 }} />
+                        </span>
+                      ) : isKnownClass ? (
                         <span className="icon-category" />
                       ) : (
                         <span className="icon-category" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <i className={cat.icon || 'fa fa-cube'} style={{ fontSize: 24, color: '#ffffff' }} />
+                          <i className={cat.icon && cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon || 'cube'}`} style={{ fontSize: 22, color: '#ffffff' }} />
                         </span>
                       )}
                       <span className="label-category">
@@ -169,9 +174,10 @@ export function CategoryNav() {
             >
               {categories.map((cat) => {
                 const slugLower = cat.slug.toLowerCase();
-                const imageSrc = DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg';
+                const isImage = cat.icon && (cat.icon.startsWith('http://') || cat.icon.startsWith('https://') || cat.icon.startsWith('/') || cat.icon.startsWith('data:'));
+                const imageSrc = isImage ? cat.icon : (DEFAULT_IMAGES[slugLower] || '/images/catgirl_1.jpg');
                 const gradient = DEFAULT_GRADIENTS[slugLower] || 'linear-gradient(45deg, #10b981, #3b82f6)';
-                const iconClass = cat.icon || 'fa fa-cube';
+                const iconClass = !isImage && cat.icon ? (cat.icon.startsWith('fa') ? cat.icon : `fa fa-${cat.icon}`) : (!isImage ? 'fa fa-cube' : '');
 
                 return (
                   <Link
@@ -182,17 +188,20 @@ export function CategoryNav() {
                   >
                     <div className="story-ring" style={{ background: gradient }}>
                       <div className="story-circle">
-                        <Image
+                        <img
                           src={imageSrc}
                           alt={cat.name}
                           width={72}
                           height={72}
                           className="story-img"
                           referrerPolicy="no-referrer"
+                          style={{ objectFit: 'cover' }}
                         />
-                        <div className="story-icon-overlay">
-                          <span className={iconClass} aria-hidden="true" />
-                        </div>
+                        {iconClass && (
+                          <div className="story-icon-overlay">
+                            <span className={iconClass} aria-hidden="true" />
+                          </div>
+                        )}
                       </div>
                       {cat.badge && <span className="story-badge">{cat.badge}</span>}
                     </div>

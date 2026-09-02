@@ -243,6 +243,18 @@ export function AdminLayout() {
     );
   };
 
+  const handleDeleteCategory = (catId: string) => {
+    const cat = categories.find((c) => c.id === catId);
+    if (cat) {
+      fetch('/api/categories', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: cat.slug, id: cat.id }),
+      }).catch((err) => console.error('Error deleting category from Supabase:', err));
+    }
+    setCategories((prev) => prev.filter((c) => c.id !== catId));
+  };
+
   const handleAddUser = (newUser: AdminUser) => {
     setUsers((prev) => [newUser, ...prev]);
   };
@@ -339,6 +351,7 @@ export function AdminLayout() {
           {activeTab === 'products' && (
             <ProductsTab
               products={products}
+              categories={categories}
               onAddProduct={handleAddProduct}
               onUpdateProduct={handleUpdateProduct}
               onDeleteProduct={handleDeleteProduct}
@@ -351,6 +364,7 @@ export function AdminLayout() {
               categories={categories}
               onAddCategory={handleAddCategory}
               onUpdateCategory={handleUpdateCategory}
+              onDeleteCategory={handleDeleteCategory}
             />
           )}
 
